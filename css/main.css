@@ -16,6 +16,20 @@ body {
   color: #555555;
 }
 
+.expand {
+    height: 24px;
+    line-height: 20px;
+    overflow: hidden;
+    transition: height 0.3s ease;
+    font-style: italic;
+
+}
+
+.expand a {
+  /*font-weight:600;*/
+  color: #5a9885;
+}
+
 .bold {
   font-weight: 400;
   font-size: 20px;
@@ -118,7 +132,7 @@ body {
 }
 
 .resume .resume_left ul li .icon {
-  width: 35px;
+  width: 20px;
   height: 35px;
   /*background: #fff;*/
   color: #7ab8a5;
@@ -131,7 +145,7 @@ body {
 .resume .resume_right .resume_hobby ul li i {
   position: absolute;
   top: 50%;
-  left: 50%;
+ 
   transform: translate(-50%, -50%);
 }
 
