@@ -9,48 +9,46 @@
           <link href="fontawesome-free-6.7.2-web/css/fontawesome.css" rel="stylesheet" />
           <link href="fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet" />
           <link href="fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet" />
-          <link href="fontawesome-free-6.7.2-web/sharp-thin.css" rel="stylesheet" />
-          <link href="fontawesome-free-6.7.2-web/css/duotone-thin.css" rel="stylesheet" />
-          <link href="fontawesome-free-6.7.2-web/css/sharp-duotone-thin.css" rel="stylesheet" />
-        <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
        
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
- $(document).ready(function () {
-  $('p.expand').each(function () {
-    const $p = $(this);
-    const lineHeight = parseInt($p.css('line-height'));
-    const collapsedHeight = lineHeight;
-
-    $p.css({
-      'height': collapsedHeight + 'px',
-      'overflow': 'hidden'
-    }).attr('data-expanded', 'false');
-
-    // Save the base label (remove existing + or - if present)
-    const $link = $p.find('a');
-    const label = $link.text().replace(/\s*[+-]$/, '');
+$(document).ready(function () {
+  $('.expand').each(function () {
+    const $section = $(this);
+    const $link = $section.find('a').first();
+    const label = $link.text().replace(/\s*[+-]$/, '').trim();
     $link.data('base-label', label);
     $link.text(label + ' +');
+
+    // Collapse initially using line-height
+    const lineHeight = parseInt($section.css('line-height') * 1.1);
+    const collapsedHeight = lineHeight;
+
+    $section.css({
+      height: collapsedHeight + 'px',
+      overflow: 'hidden',
+      transition: 'height 0.3s ease'
+    }).attr('data-expanded', 'false');
   });
 
-  $('p.expand a').click(function (e) {
+  $('.expand a').click(function (e) {
     e.preventDefault();
-
     const $link = $(this);
-    const $p = $link.closest('p.expand');
-    const isExpanded = $p.attr('data-expanded') === 'true';
+    const $section = $link.closest('.expand');
+    const isExpanded = $section.attr('data-expanded') === 'true';
     const base = $link.data('base-label');
 
+    const lineHeight = parseInt($section.css('line-height'));
+    const collapsedHeight = lineHeight;
+
     if (isExpanded) {
-      const collapsedHeight = parseInt($p.css('line-height'));
-      $p.css('height', collapsedHeight + 'px');
-      $p.attr('data-expanded', 'false');
+      $section.css('height', collapsedHeight + 'px');
+      $section.attr('data-expanded', 'false');
       $link.text(base + ' +');
     } else {
-      $p.css('height', $p.prop('scrollHeight') + 'px');
-      $p.attr('data-expanded', 'true');
+      $section.css('height', $section.prop('scrollHeight') + 'px');
+      $section.attr('data-expanded', 'true');
       $link.text(base + ' –');
     }
   });
@@ -73,7 +71,7 @@
          <ul>
            <li>
              <div class="icon">
-               <i class="fas fa-map"></i>
+               <i class="fas fa-location-pin"></i>
              </div>
              <div class="data">
                The Hague, NL
@@ -92,7 +90,7 @@
                <i class="fas fa-paper-plane"></i>
              </div>
              <div class="data">
-               pia.elkoshairy@gmail.com
+               <a href="mailto:pia.elkoshairy@gmail.com">pia.elkoshairy@gmail.com</a>
              </div>
            </li> 
            <li>
@@ -100,7 +98,7 @@
                <i class="fas fa-globe"></i>
              </div>
              <div class="data">
-               piaelkoshairy.github.io
+               <a href="https://piaelkoshairy.github.io" target="_blank">piaelkoshairy.github.io</a>
              </div>
            </li> 
          </ul>
@@ -163,83 +161,33 @@
         <div class="title">
           <p class="bold">skills</p>
         </div>
-       <p>HTML <span>&bull;</span> CSS <span>&bull;</span> JS (basic) <span>&bull;</span> PHP (basic) <span>&bull;</span> SQL (basic) <span>&bull;</span> JQL <span>&bull;</span> Github <span>&bull;</span> Adobe CC <span>&bull;</span> Data Analysis <span>&bull;</span> Browser debugging <span>&bull;</span> Agile / Scrum <span>&bull;</span> Jira Automations</p>
+       <p>HTML <span>&bull;</span> CSS <span>&bull;</span> JS (basic) <span>&bull;</span> PHP (basic) <span>&bull;</span> SQL (basic) <span>&bull;</span> JQL <span>&bull;</span> Github <span>&bull;</span> Adobe CC <span>&bull;</span> Data Analysis <span>&bull;</span> Browser (remote) debugging <span>&bull;</span> Agile / Scrum <span>&bull;</span> Jira Automations</p>
       </div>
 
       <div class="resume_item resume_skills">
         <div class="title">
           <p class="bold">Ad Tech</p>
         </div>
-       <p>GAM <span>&bull;</span> DV360 <span>&bull;</span> CM360 <span>&bull;</span> Xandr <span>&bull;</span> Mediamath <span>&bull;</span> The Trade Desk <span>&bull;</span> OpenX <span>&bull;</span> Adform <span>&bull;</span> Verizon <span>&bull;</span> Smart Adserver <span>&bull;</span> Liverail <span>&bull;</span> Ooyala Pulse <span>&bull;</span> LKQD <span>&bull;</span> Improve <span>&bull;</span> Sizmek <span>&bull;</span> SpotX <span>&bull;</span> Gumgum <span>&bull;</span> Index Exchange <span>&bull;</span> Celtra <span>&bull;</span> Jivox <span>&bull;</span> IAS <span>&bull;</span> Moat <span>&bull;</span> DoubleVerify <span>&bull;</span> Amazon TAM <span>&bull;</span> Prebid.js <span>&bull;</span> VAST <span>&bull;</span> VPAID <span>&bull;</span> Facebook Ads <span>&bull;</span> Google Ads</p>
+       <p>GAM <span>&bull;</span> DV360 <span>&bull;</span> CM360 <span>&bull;</span> The Trade Desk <span>&bull;</span> OpenX <span>&bull;</span> Xandr <span>&bull;</span> Mediamath <span>&bull;</span> Adform <span>&bull;</span> Verizon <span>&bull;</span> Smart Adserver <span>&bull;</span> Liverail <span>&bull;</span> Ooyala Pulse <span>&bull;</span> LKQD <span>&bull;</span> Improve 360 <span>&bull;</span> Sizmek <span>&bull;</span> SpotX <span>&bull;</span> Gumgum Ad Manager <span>&bull;</span> Index Exchange <span>&bull;</span> Celtra <span>&bull;</span> Jivox <span>&bull;</span> IAS <span>&bull;</span> Moat <span>&bull;</span> DoubleVerify <span>&bull;</span> Amazon TAM <span>&bull;</span> Prebid.js (client & S2S)<span>&bull;</span> VAST <span>&bull;</span> VPAID <span>&bull;</span> Facebook Ads <span>&bull;</span> Google Ads</p>
       </div>
-
-
-<br> <!-- PAGEBREAK -->
-<br>
-<br>
        <div class="resume_item resume_social">
          <div class="title">
            <p class="bold">Certificates</p>
          </div>
-         <ul>
+          <div class="expand">
+          <a href="#">Advertising +</a>
+          <ul>
           <li>
             <div class="data">
-              <p class="semi-bold">2025 <span>/ Todd Birzer & Udemy</span></p>
-              <p>Product Management 101</p>
-            </div>
-          </li> 
-           <li>
-            <div class="data">
-              <p class="semi-bold">2024 <span>/ 365 Careers & Udemy</span></p>
-              <p>ChatGPT & GenAI</p>
-            </div>
-          </li> 
-           <li>
-            <div class="data">
-              <p class="semi-bold">2024 <span>/  Learn Prompting</span></p>
-              <p>ChatGPT for Everyone</p>
-            </div>
-          </li> 
-           <li>
-            <div class="data">
-              <p class="semi-bold">2023 <span>/ M. Rubio & Udemy</span></p>
-              <p>Agile Scrum Fundamentals</p>
-            </div>
-          </li> 
-          <li>
-            <div class="data">
-              <p class="semi-bold">2021 <span>/ Bloom & Udemy</span></p>
-              <p>Advanced Stock Trading & Strategies</p>
-            </div>
-          </li> 
-          <li>
-            <div class="data">
-              <p class="semi-bold">2021 <span>/ S. Ballinger & Udemy</span></p>
-              <p>Investing in Stocks</p>
-            </div>
-          </li>  
-          <li>
-            <div class="data">
-              <p class="semi-bold">2020 <span>/ Bloom & Udemy</span></p>
-              <p>Foundation Stock Trading</p>
-            </div>
-          </li>
-           <li>
-            <div class="data">
-              <p class="semi-bold">2020 <span>/ TTD Edge</span></p>
+              <p class="semi-bold">2020 <span>/ The Trade Desk Edge</span></p>
               <p>Data Driven Planning</p>
-            </div>
-          </li>
-           <li>
-            <div class="data">
-              <p class="semi-bold">2020 <span>/ Yonsei & Coursera</span></p>
-              <p>Sustainable Development In The 21st Century</p>
             </div>
           </li>
           <li>
             <div class="data">
               <p class="semi-bold">2019 <span>/ Mediamath NMI</span></p>
-              <p>Digital Marketing & Programmatic</p>
+              <p>Digital Marketing & Programmatic 101
+              </p>
             </div>
           </li>
           <li>
@@ -248,49 +196,94 @@
               <p>AdX 2 & DFP 2</p>
             </div>
           </li>
-          <li>
-            <div class="data">
-              <p class="semi-bold">2019 <span>/ Educational Testing Service</span></p>
-              <p>English TOEFL IBT, Score 114</p>
-            </div>
-          </li>
-          <li>
+              <li>
             <div class="data">
               <p class="semi-bold">2018 <span>/ Google Publisher University</span></p>
               <p>AdX 1 & DFP 1</p>
+            <li>
+            <div class="data">
+              <p class="semi-bold">2015 <span>/ Duke University (Coursera)</span></p>
+              <p>Advertising & Society</p>
             </div>
           </li>
+          </ul>
+            </div>
+          <div class="expand">
+          <a href="#">Technology +</a>
+          <ul>
           <li>
             <div class="data">
-              <p class="semi-bold">2017 <span>/ Duke & Coursera</span></p>
+              <p class="semi-bold">2025 <span>/ Todd Birzer (Udemy)</span></p>
+              <p>Product Management 101</p>
+            </div>
+          </li> 
+           <li>
+            <div class="data">
+              <p class="semi-bold">2024 <span>/ 365 Careers (Udemy)</span></p>
+              <p>ChatGPT & GenAI</p>
+            </div>
+          </li> 
+           <li>
+            <div class="data">
+              <p class="semi-bold">2024 <span>/ Learn Prompting</span></p>
+              <p>ChatGPT for Everyone</p>
+            </div>
+          </li> 
+       
+              <li>
+            <div class="data">
+              <p class="semi-bold">2023 <span>/ M. Rubio (Udemy)</span></p>
+              <p>Agile Scrum Fundamentals</p>
+            </div>
+          </li>
+          
+             <li>
+            <div class="data">
+              <p class="semi-bold">2017 <span>/ Duke University (Coursera)</span></p>
               <p>Progranning Foundations with Javacript, HTML & CSS</p>
             </div>
           </li>
-          <li>
+                  <li>
             <div class="data">
               <p class="semi-bold">2016 <span>/ Udemy</span></p>
               <p>SQL Beginner Data Analysis</p>
             </div>
           </li>
-          <li>
-            <div class="data">
-              <p class="semi-bold">2016 <span>/ Irvine & Coursera</span></p>
-              <p>Fundamentals of Management</p>
-            </div>
-          </li>
-          <li>
-            <div class="data">
-              <p class="semi-bold">2015 <span>/ Duke & Coursera</span></p>
-              <p>Advertising & Society</p>
-            </div>
-          </li>
-          <li>
+             <li>
             <div class="data">
               <p class="semi-bold">2013 <span>/ Excel With Business</span></p>
               <p>Webdesign with HTML & CSS</p>
             </div>
           </li>
+          </ul>
+          </div>
+          <div class="expand">
+          <a href="#">Management +</a>
+            <ul> 
+           <li>
+            <div class="data">
+              <p class="semi-bold">2016 <span>/ University of Irvine (Coursera)</span></p>
+              <p>Fundamentals of Management</p>
+            </div>
+          </li>
           <li>
+            <div class="data">
+              <p class="semi-bold">2015 <span>/ Copenhagen Business School (Coursera)</span></p>
+              <p>Leadership in 21st Century Organizations</p>
+            </div>
+          </li>
+          </ul>
+          </div>
+          <div class="expand">
+          <a href="#">Language +</a>
+            <ul> 
+              <li>
+            <div class="data">
+              <p class="semi-bold">2019 <span>/ Educational Testing Service</span></p>
+              <p>English TOEFL IBT, Score 114</p>
+            </div>
+          </li>
+            <li>
             <div class="data">
               <p class="semi-bold">2012 <span>/ Instituto México Americano de Cultura</span></p>
               <p>Spanish C2</p>
@@ -314,11 +307,41 @@
               <p>Spanish B2</p>
             </div>
           </li>
-          
-         </ul>
+          </ul>
+          </div>
+             <div class="expand">
+          <a href="#">Other +</a>
+            <ul> 
+               <li>
+            <div class="data">
+              <p class="semi-bold">2021 <span>/ Bloom (Udemy)</span></p>
+              <p>Advanced Stock Trading & Strategies</p>
+            </div>
+          </li> 
+          <li>
+            <div class="data">
+              <p class="semi-bold">2021 <span>/ S. Ballinger (Udemy)</span></p>
+              <p>Investing in Stocks</p>
+            </div>
+          </li>  
+          <li>
+            <div class="data">
+              <p class="semi-bold">2020 <span>/ Bloom (Udemy)</span></p>
+              <p>Foundation Stock Trading</p>
+            </div>
+          </li>
+           <li>
+            <div class="data">
+              <p class="semi-bold">2020 <span>/ Yonsei University (Coursera)</span></p>
+              <p>Sustainable Development In The 21st Century</p>
+            </div>
+          </li> 
+          </ul>
+          </div>
+          </div>
        </div>
      </div>
-  </div>
+
 
     <div class="resume_right">
             <div class="resume_profile" style="">
@@ -345,22 +368,22 @@
                         <div class="info">
                             <p class="semi-bold">Sr. Manager Technical Ad Solutions</p> 
                         <p>Leading a cross-functional team of 18 Developers and Engineers across EMEA and North America. We aim to drive campaign performance and scale through integrated technical strategy, data, QA, and custom front-end solutions.
-<br><br>
-<p class="expand"><a>Core Responsibilities+</a>
+
+<p class="expand"><a>Core Responsibilities +</a>
 
 <br>&bull; TAS Engineers -> specialize in tag hosting and tracking, site integrations validation and optimization, ad serving, second-line troubleshooting and live/remote debugging. 
 <br>&bull; TAS Developers -> focus on rich media tech QA, JavaScript tooling and front-end customizations, and scalable creative solutions.
 <br>&bull; Creative Engineers -> support implementation and creative customizations across all campaign formats, acting as technical QA and creative tag developers.
 <br>&bull; Prioritization and escalation lead for cross-regional technical issues and product releases —coordinating across Ops, Product, and Supply stakeholders. <br>
 <br>&bull; Mentor emerging leaders, help define career pathways and learning opportunities for TAS talent, and contribute to global initiatives aimed at fostering scalability, operational maturity, knowledge-sharing, and global team culture.
-<br><br></p>
+</p>
 
 <p class="expand"><a>Key achievements +</a>
 <br>
 <br>&bull; Working closely with Product and Engineering on establishing a streamlined technical integration of three legacy tech stacks into one streamlined operating framework, aligning tech stacks, tools, processes, and performance standards across geographies.
 <br>&bull; Launching internal tools and automation processes that reduced human error and improved efficiency across regional teams.
 <br>&bull; Partnering with Product and Engineering to lead pre-release testing and post-launch validation for product rollouts.
-<br>&bull; Contributing to publisher monetization strategy and campaign performance by surfacing and resolving performance gaps.<br><br>
+<br>&bull; Contributing to publisher monetization strategy and campaign performance by surfacing and resolving performance gaps.
 </p>
                         </div>
                     </li>
@@ -369,7 +392,7 @@
                     <div class="info">
                             <p class="semi-bold">Global Head of Ad Operations (legacy JustPremium)</p> 
                         <p>Guiding specialized Technical AdOps teams across different geos in their daily activities. Increasing efficiency and optimizing marketplace yield and performance. 
-                            Connecting, developing and motivating the an international AdOps team. Upgrading and streamlining internal and external platforms and technologies.</p><br>
+                            Connecting, developing and motivating the an international AdOps team. Upgrading and streamlining internal and external platforms and technologies.</p>
                             <p class="expand"><a>Core Responsibilities+</a>
                             <br>&bull; Publisher integrations through JS tags and header bidding, testing and debugging connections;
                             <br>&bull; JS and CSS customizations and automation to ensure correct functionality and creative rendering;
@@ -387,11 +410,11 @@
                     <div class="info">
                             <p class="semi-bold">Ad Operations Lead, US & LATAM (legacy JustPremium)</p> 
                         <p>Heading up AdOps team specialized in rich media ad tag integrations through standard scripts and header bidding, second line troubleshooting demand and supply side issues.</p>
-                           <p style="margin-left: 15px;"><span>
+                           <p class="expand"><a>Core Responsibilities+</a>
                             <br>&bull; Providing training and guidance for AdOps team supporting primarily the US, LATAM and Brazil, and occasionally EMEA and APAC markets;
                             <br>&bull; Troubleshooting escalated publisher integrations (JavaScript, Prebid, Index) and buying issues (programmatic and non-programmatic rich media, outstream VAST and VPAID);
                             <br>&bull; Monitoring, testing and optimizing internal workflows and technologies;
-                            <br>&bull; Educating clients and internal teams.</span></p>
+                            <br>&bull; Educating clients and internal teams.</p>
                         </div>
                     </li>
                     <li>
@@ -400,10 +423,10 @@
                                 <p class="semi-bold">Ad Operations Manager (legacy JustPremium)</p> 
                             <p>Troubleshooting and technical implementation support on both supply and demand side, across high impact rich media 
                                 marketplace of 3000+ premium publishers including Hearst, Condé Nast. Times Inc, and Meredith, and advertisers such as Amazon, LVMH, Adidas, Disney, and Heineken.</p>
-                               <p style="margin-left: 15px;"><span> 
+                               <p class="expand"><a>Core Responsibilities+</a>
                                 <br>&bull; Publisher onboarding through JS tag and header bidding integrations;
                                 <br>&bull; 2nd line troubleshooting, debugging implementations, investigating ad serving discrepancies,
-                                campaign performance issues, tracking errors, revenue and fill rate optimization, etc.</span></p>
+                                campaign performance issues, tracking errors, revenue and fill rate optimization, etc.</p>
                             </div>
                         </li>
                 </ul>
@@ -414,29 +437,24 @@
                         <div class="info">
                             <p class="semi-bold">Director of Ad Operations</p> 
                         <p>Leading AdOps team responsible for the creation and management of VAST, VPAID, and rich media ad campaigns throughout 30+ countries for 1000+ major consumer brands such as Samsung, Nestlé, P&G, Coca Cola, L’Oréal and GM, across in-stream video network of 300+ media partners including Viacom, A&E and Telemundo.</p>
-                        <p style="margin-left: 15px;"><span>
+                        <p class="expand"><a>Core Responsibilities+</a>
                             <br>&bull; Providing AdOps / Demand team with guidance on ad creation and design, rich media and video editing, setup and delivery, troubleshooting, performance and yield optimization of approx. 150 monthly direct and programmatic campaigns;
                             <br>&bull; Supporting AdOps / Supply team with establishing new publisher partner integrations, optimizations and troubleshooting technical issues;
                             <br>&bull; Overseeing overall campaign and inventory performance and profit magins per geo;
                             <br>&bull; Testing and implementing new ad products and technologies, optimizing workflows and processes.
-                        </span></p>
+                        </p>
                         </div>
                     </li>
- <br> <!-- PAGEBREAK -->
-<br>
-<br>
-<br>
-<br>
                     <li>
                     <div class="date">2013 - 2015 <span>/ Mexico City, Mexico</span></div>
                     <div class="info">
                             <p class="semi-bold">Ad Operations Coordinator</p> 
                         <p>Coordinating delivery and optimization of approx. 40 monthly in-stream VAST and VPAID in-stream video campaigns.</p>
-                        <p style="margin-left: 15px;"><span> 
+                        <p class="expand"><a>Core Responsibilities+</a>
                             <br>&bull; Designing and building interactive and branded high impact video creatives;
                             <br>&bull; Regular and ac hoc reporting and troubleshooting delivery issues;
                             <br>&bull; Managing and troubleshooting direct inventory and ad exchange connections;
-                            <br>&bull; Creating custom-made internal campaign analytics and management platform.</span></p>
+                            <br>&bull; Creating custom-made internal campaign analytics and management platform.</p>
                         </div>
                     </li>
                 </ul>
@@ -511,33 +529,36 @@
                       </li> 
                       </ul>
             </div>
-        </div>
-        <div class="resume_item resume_other">
+             <div class="resume_item resume_other">
                 <div class="title">
                 <p class="bold">Volunteering</p>
                 </div>
                     <ul>
                       <li>
                         <div class="data">
-                          <p class="semi-bold">2025 <span>Dock/Gumgum Spring School Project</span></p>
+                          <p class="semi-bold">2025 <span>/ Dock Youth Center</span></p>
                           <p>Volunteer lecturer</p>
                         </div>
                       </li>
                        <li>
                         <div class="data">
-                          <p class="semi-bold">2024 - 2025 <span>Nederland Wordt Beter</span></p>
+                          <p class="semi-bold">2024 - 2025 <span>/ Nederland Wordt Beter</span></p>
                           <p>Volunteer</p>
                         </div>
                       </li>
+                      </ul><br>
+                      <ul>
                       <li>
                         <div class="data">
-                          <p class="semi-bold">2011 <span>Sustainable Africa Youth Foundation</span></p>
+                          <p class="semi-bold">2011 <span>/ Sustainable Africa Youth Foundation</span></p>
                           <p>Volunteer</p>
                         </div>
                       </li>
                       </ul>
             </div>
         </div>
+        </div>
+       
     </div>
 </div>
 

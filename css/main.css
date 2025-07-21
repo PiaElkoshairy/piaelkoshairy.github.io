@@ -16,12 +16,17 @@ body {
   color: #555555;
 }
 
+p {
+  margin-bottom: 1em;
+}
+
 .expand {
     height: 24px;
     line-height: 20px;
     overflow: hidden;
     transition: height 0.3s ease;
     font-style: italic;
+    margin-bottom: 0;
 
 }
 
@@ -122,6 +127,14 @@ body {
   border-bottom: 0px;
 }
 
+.resume_left a {
+  color: #555555
+}
+
+.resume_left a:hover {
+  color: #5a9885
+}
+
 .resume .resume_left ul li {
   display: inline-flex;
   align-items: center;
@@ -194,7 +207,8 @@ body {
 
 .resume .resume_left .resume_social .semi-bold {
   color: #fff;
-
+    margin-bottom: 0;
+    margin-top: 0.5em;
 }
 
 .resume .resume_left .resume_social .semi-bold span {
@@ -202,6 +216,21 @@ body {
     margin-bottom: 3px;
     font-weight: 100;
   }
+
+.resume .resume_left .resume_social a {
+  color: #5a9885;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  text-decoration: none;
+}
+
+.resume .resume_left .resume_social p {margin-bottom: 0;}
+.resume .resume_left .resume_social .expand {
+  font-style: normal;    
+  margin-bottom: 1em;
+}
 
 .resume .resume_right {
   width: 520px;
@@ -341,6 +370,7 @@ body {
 
   .resume .resume_right .resume_other  .semi-bold {
     font-size: 16px;
+    margin-bottom: 0;
 
   }
  
