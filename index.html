@@ -13,7 +13,7 @@
        
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Expanding blocks -->
+<!-- Expanding content -->
 <script>
 $(document).ready(function () {
   $('.expand').each(function () {
@@ -421,11 +421,18 @@ document.addEventListener('DOMContentLoaded', function () {
     googletag.enableServices();
   });
 </script>
- <!-- End GAM -->
+<!-- End GAM -->
+
+<!-- Start Video.js IMA SDK -->
+    <link rel="stylesheet" href="https://googleads.github.io/videojs-ima/node_modules/video.js/dist/video-js.min.css" />
+    <link rel="stylesheet" href="https://googleads.github.io/videojs-ima/node_modules/videojs-contrib-ads/dist/videojs.ads.css" />
+    <link rel="stylesheet" href="https://googleads.github.io/videojs-ima/dist/videojs.ima.css" />
+<!-- End Video.js IMA SDK-->
 
 </head>
 
 <body class="is-preload">
+
 
 <!-- /21697839273/demotag/billboard 
 <div id='div-gpt-ad-1753344059773-0' style='min-width: 970px; min-height: 250px;'>
@@ -434,11 +441,13 @@ document.addEventListener('DOMContentLoaded', function () {
   </script>
 </div> --> 
 
+  <div class="gam-container-lb">
 <!-- /21697839273/demotag/leaderboard -->
 <div id='div-gpt-ad-1753344270292-0' style='min-width: 728px; min-height: 90px;'>
   <script>
     googletag.cmd.push(function() { googletag.display('div-gpt-ad-1753344270292-0'); });
   </script>
+</div>
 </div>
 
 <div class="resume" style="">
@@ -552,6 +561,7 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
        <p>GAM <span>&bull;</span> DV360 <span>&bull;</span> CM360 <span>&bull;</span> The Trade Desk <span>&bull;</span> OpenX <span>&bull;</span> Xandr <span>&bull;</span> Mediamath <span>&bull;</span> Adform <span>&bull;</span> Verizon <span>&bull;</span> Smart Adserver <span>&bull;</span> Liverail <span>&bull;</span> Ooyala Pulse <span>&bull;</span> LKQD <span>&bull;</span> Improve 360 <span>&bull;</span> Sizmek <span>&bull;</span> SpotX <span>&bull;</span> Gumgum Ad Manager <span>&bull;</span> Index Exchange <span>&bull;</span> Celtra <span>&bull;</span> Jivox <span>&bull;</span> IAS <span>&bull;</span> Moat <span>&bull;</span> DoubleVerify <span>&bull;</span> Amazon TAM <span>&bull;</span> Prebid.js (client & S2S)<span>&bull;</span> VAST <span>&bull;</span> VPAID <span>&bull;</span> Facebook Ads <span>&bull;</span> Google Ads</p>
       </div>
+
        <div class="resume_item resume_social">
          <div class="title">
            <p class="bold">Certificates</p>
@@ -810,6 +820,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <br>&bull; 2nd line troubleshooting, debugging implementations, investigating ad serving discrepancies,
                                 campaign performance issues, tracking errors, revenue and fill rate optimization, etc.</p>
                             </div>
+                              <div class="gam-container-mpu">
+                            <!-- /21697839273/demotag/xxx -->
+
+                            </div>
                         </li>
                 </ul>
                 <p class="bold"><span>Impaktu</span> </p>
@@ -839,7 +853,56 @@ document.addEventListener('DOMContentLoaded', function () {
                             <br>&bull; Creating custom-made internal campaign analytics and management platform.</p>
                         </div>
                     </li>
-                </ul>
+                    </ul>
+                          <div id="video-anchor">           
+                          <div id="vid-container">
+                              <video id="content_video" class="video-js vjs-default-skin" controls preload="auto">
+                                <source src="../video/Phil Schraeder, CEO, GumGum.mp4" type="video/mp4" />
+                              </video>
+
+                              <!-- IMA/Video.js dependencies -->
+                              <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+                              <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+                              <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
+                              <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
+
+                              <script>
+                                const player = videojs('content_video');
+
+                                    player.ima({
+                                      id: 'content_video',
+                                      adTagUrl:
+                                      'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/video/instream_1x1&description_url=https%3A%2F%2Fgg-tas.koshymedia.com%2F&tfcd=0&npa=0&sz=1x1&gdfp_req=1&unviewed_position_start=1&output=vast&env=vp&impl=s&correlator='
+                                    });
+
+                                  player.ready(() => {
+                                    player.ima.requestAds();
+                                    player.play(); // Ensure playback starts (required by some environments)
+                                  });
+
+                                  // Floating logic
+                                  window.addEventListener('DOMContentLoaded', () => {
+                                    const anchor = document.getElementById('video-anchor');
+                                    const container = document.getElementById('vid-container');
+
+                                    const observer = new IntersectionObserver(
+                                      ([entry]) => {
+                                        if (!entry.isIntersecting) {
+                                          container.classList.add('floating');
+                                        } else {
+                                          container.classList.remove('floating');
+                                        }
+                                      },
+                                      { threshold: 0 }
+                                    );
+
+                                    observer.observe(anchor);
+                                  });
+                              </script>
+                         </div>
+                         </div>
+                    
+                
                 <p class="bold"><span>Maastricht School of Management</span> </p>
                 <ul>
                     <li>
@@ -911,7 +974,7 @@ document.addEventListener('DOMContentLoaded', function () {
                       </li> 
                       </ul>
             </div>
-             <div class="resume_item resume_hobby">
+             <div class="resume_item resume_volunteering">
                 <div class="title">
                 <p class="bold">Volunteering</p>
                 </div>
@@ -937,6 +1000,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                       </li>
                       </ul>
+                      </div>
+             <div class="resume_item resume_ads">
+             <div class="gam-container-mpu">
+            <!-- /21697839273/demotag/xxx -->
+
+            </div>
             </div>
         </div>
         </div>
