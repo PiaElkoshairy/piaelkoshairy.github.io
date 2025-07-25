@@ -165,7 +165,7 @@ p {
 
 .resume .resume_left ul li .data {
   color: #555555;
-  line-height: 10px;
+  
 }
 
 .resume .resume_left .resume_skills ul li {
@@ -397,6 +397,10 @@ p {
 
  /* AD CONTAINERS */ 
 
+  .resume_item.resume_ads {
+    display: none;
+  }
+
   .gam-container-lb {
     margin: 20px auto;
     width: 728px;
@@ -581,6 +585,10 @@ p {
   background: #5a9885;
 }
 
+.resume .resume_left .resume_social .semi-bold {
+    margin: 0 0.5em 0 0;
+}
+
   .resume_content {
     display: flex;
     flex-direction: column;
@@ -624,7 +632,7 @@ p {
   .resume_item.resume_social { order: 6; }
   .resume_item.resume_other { order: 4; }
   .resume_item.resume_volunteering { order: 7; background-color: #d1e0df !important; }
-  .resume_item.resume_ads {order: 8; background-color: #fff !important; display: none;}
+  .resume_item.resume_ads {order: 8; background-color: #fff !important;}
 
     .resume_item.resume_about p { margin-bottom: 0;}
 
