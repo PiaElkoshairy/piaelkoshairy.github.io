@@ -416,6 +416,24 @@ p {
     background-color: red;
     
 }
+
+.gam-container-sky {
+    margin: 30px;
+    width: 300px;
+    height: 600px;
+    display: none;
+    position: fixed; 
+    background-color: red;
+    top: 50%;
+    transform: translateY(-50%);
+} 
+
+.left {
+}
+
+.right {
+}
+
 /* IMA SDK video ad container */ 
 
 .video-js {
@@ -729,5 +747,12 @@ p {
     transition: all 0.4s ease;
     z-index: 1;
 }
+  }
+/* LARGE SCREENS ONLY */
 
-}
+@media (min-width: 1550px) {
+
+  .gam-container-sky {
+    display: flex !important;
+  }
+} 

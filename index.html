@@ -450,6 +450,16 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </div>
 
+<div class="gam-container-sky left">
+            <!-- /21697839273/demotag/xxx -->
+
+</div>
+
+<div class="gam-container-sky right">
+            <!-- /21697839273/demotag/xxx -->
+
+</div>
+
 <div class="resume" style="">
   
    <div class="resume_left">
@@ -857,7 +867,7 @@ document.addEventListener('DOMContentLoaded', function () {
                           <div id="video-anchor">
                           <div id="vid-container">
                               <button id="close-float" style="display:none;position:absolute;top:4px;right:4px;z-index:10001;background:#000;color:#fff;border:none;padding:4px 8px;font-size:14px;cursor:pointer;">×</button>           
-                              <video id="content_video" class="video-js vjs-default-skin" controls preload="auto">
+                              <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" autoplay muted>
                                 <source src="video/Expertos en publicidad digital - IMPAKTU.mp4" type="video/mp4" />
                               </video>
 
@@ -1026,5 +1036,42 @@ document.addEventListener('DOMContentLoaded', function () {
        
     </div>
 </div>
+
+<!-- Start position ad containers -->
+<script>
+function positionSkyscraperAds() {
+  const resume = document.querySelector('.resume');
+  const leftAd = document.querySelector('.gam-container-sky.left');
+  const rightAd = document.querySelector('.gam-container-sky.right');
+
+  if (!resume || !leftAd || !rightAd) return;
+
+  const screenWidth = window.innerWidth;
+  const resumeWidth = resume.offsetWidth;
+  const sideSpace = (screenWidth - resumeWidth) / 2;
+  const adWidth = leftAd.offsetWidth;
+  const padding = (sideSpace - adWidth) / 2;
+
+  if (screenWidth >= 1550 && padding > 0) {
+    // Position left ad from the left edge
+    leftAd.style.left = `${padding}px`;
+    leftAd.style.right = 'auto';
+
+    // Position right ad from the right edge
+    rightAd.style.right = `${padding}px`;
+    rightAd.style.left = 'auto';
+
+    leftAd.style.display = 'block';
+    rightAd.style.display = 'block';
+  } else {
+    leftAd.style.display = 'none';
+    rightAd.style.display = 'none';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', positionSkyscraperAds);
+window.addEventListener('resize', positionSkyscraperAds);
+</script>
+<!-- End position ad containers -->
 </body>
 </html>
