@@ -1039,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- Start position ad containers -->
 <script>
-function positionSkyscraperAds() {
+function showAndPositionAds() {
   const resume = document.querySelector('.resume');
   const leftAd = document.querySelector('.gam-container-sky.left');
   const rightAd = document.querySelector('.gam-container-sky.right');
@@ -1051,27 +1051,28 @@ function positionSkyscraperAds() {
   const sideSpace = (screenWidth - resumeWidth) / 2;
   const adWidth = leftAd.offsetWidth;
   const padding = (sideSpace - adWidth) / 2;
+  const scrollTrigger = 300;
 
-  if (screenWidth >= 1550 && padding > 0) {
-    // Position left ad from the left edge
+  if (scrollY >= scrollTrigger && screenWidth >= 1550 && padding > 0) {
     leftAd.style.left = `${padding}px`;
-    leftAd.style.right = 'auto';
-
-    // Position right ad from the right edge
     rightAd.style.right = `${padding}px`;
+    leftAd.style.right = 'auto';
     rightAd.style.left = 'auto';
 
-    leftAd.style.display = 'block';
-    rightAd.style.display = 'block';
+    leftAd.classList.add('show');
+    rightAd.classList.add('show');
   } else {
-    leftAd.style.display = 'none';
-    rightAd.style.display = 'none';
+    leftAd.classList.remove('show');
+    rightAd.classList.remove('show');
   }
 }
 
-window.addEventListener('DOMContentLoaded', positionSkyscraperAds);
-window.addEventListener('resize', positionSkyscraperAds);
+window.addEventListener('DOMContentLoaded', showAndPositionAds);
+window.addEventListener('resize', showAndPositionAds);
+window.addEventListener('scroll', showAndPositionAds);
 </script>
+
+
 <!-- End position ad containers -->
 </body>
 </html>
