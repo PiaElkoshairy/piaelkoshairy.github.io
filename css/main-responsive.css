@@ -395,6 +395,14 @@ p {
     
   }
 
+  .custom-link {
+    color: #555555;
+  }
+
+  .custom-link:hover {
+  color: #5a9885
+}
+
  /* AD CONTAINERS */ 
 
   .resume_item.resume_ads {
