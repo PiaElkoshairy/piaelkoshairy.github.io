@@ -405,7 +405,7 @@ p {
     margin: 20px auto;
     width: 728px;
     display: flex;
-    background-color: red;
+   
 }
 
 .gam-container-mpu {
@@ -413,7 +413,7 @@ p {
     width: 300px;
     height: 250px;
     display: none;
-    background-color: red;
+
     
 }
 
@@ -424,7 +424,7 @@ p {
   width: 300px;
   height: 600px;
   z-index: 1000;
-  background: red;
+
 
   /* initially invisible but measurable */
   opacity: 0;
