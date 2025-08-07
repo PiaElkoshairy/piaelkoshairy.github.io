@@ -916,53 +916,58 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
                               <script>
-                                const player = videojs('content_video');
+                                  const player = videojs('content_video');
 
-                                    player.ima({
-                                      id: 'content_video',
-                                   // adTagUrl:'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&gdfp_req=1&output=vast&unviewed_position_start=1&correlator=',
-                                      adTagUrl:'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=xml_vmap1&cust_params=videotype%3Dlongform&unviewed_position_start=1&env=vp&correlator=',
-                 // [ working sample] adTagUrl:'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/vmap_ad_samples&sz=640x480&cust_params=sample_ar%3Dpreonly&ciu_szs=300x250%2C728x90&gdfp_req=1&ad_rule=1&output=vmap&unviewed_position_start=1&env=vp&correlator=',
-                                      debug: true
-                                    });
-
-                                  player.ready(() => {
-                                    player.ima.requestAds();
-                                    player.play(); // Ensure playback starts (required by some environments)
+                                  player.ima({
+                                    id: 'content_video',
+                                    adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=xml_vmap1&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=',
+                                    debug: true
                                   });
 
-                                  // Floating logic
+                                  player.ready(() => {
+                                    // 👇 Wait for actual user interaction before starting ads
+                                    const startPlayback = () => {
+                                      player.ima.initializeAdDisplayContainer(); // Critical for VMAP
+                                      player.ima.requestAds();
+                                      player.play();
+
+                                      // Optional: Remove listener to prevent double call
+                                      player.off('click', startPlayback);
+                                    };
+
+                                    // 👇 Bind it to the player's first click or tap
+                                    player.one('click', startPlayback);
+                                  });
+
+                                  // --- Floating logic (unchanged) ---
                                   window.addEventListener('DOMContentLoaded', () => {
                                     const anchor = document.getElementById('video-anchor');
                                     const container = document.getElementById('vid-container');
-
-                                    // Only enable floating on desktop
                                     const isDesktop = window.matchMedia('(min-width: 768px)').matches;
-
-                                    if (!isDesktop) return; // Skip floating logic on mobile/tablet
+                                    if (!isDesktop) return;
 
                                     const observer = new IntersectionObserver(
                                       ([entry]) => {
-                                      if (!entry.isIntersecting) {
-                                        container.classList.add('floating');
-                                        document.getElementById('close-float').style.display = 'block';
-                                      } else {
-                                        container.classList.remove('floating');
-                                        document.getElementById('close-float').style.display = 'none';
-                                      }
+                                        if (!entry.isIntersecting) {
+                                          container.classList.add('floating');
+                                          document.getElementById('close-float').style.display = 'block';
+                                        } else {
+                                          container.classList.remove('floating');
+                                          document.getElementById('close-float').style.display = 'none';
+                                        }
                                       },
                                       { threshold: 0 }
                                     );
 
                                     observer.observe(anchor);
-                                    // Close button
-                                  const closeBtn = document.getElementById('close-float');
-                                  closeBtn.addEventListener('click', () => {
-                                    container.classList.remove('floating');
-                                    closeBtn.style.display = 'none';
+
+                                    const closeBtn = document.getElementById('close-float');
+                                    closeBtn.addEventListener('click', () => {
+                                      container.classList.remove('floating');
+                                      closeBtn.style.display = 'none';
+                                    });
                                   });
-                                  });
-                              </script>
+                                </script>
                          </div>
                          </div>
                     
