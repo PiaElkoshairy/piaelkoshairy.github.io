@@ -487,9 +487,9 @@ p {
 
 #vid-container.floating {
     position: fixed;
-    bottom: 1rem;
+    bottom: 2rem;
     right: 1rem;
-    width: 280px;
+    width: 260px;
     height: 140px;
     z-index: 9999;
     background: #000;
@@ -757,6 +757,7 @@ p {
 
 .video-js {
     width: auto;
+    margin: 0 !important;
 }
 
 #vid-container {
