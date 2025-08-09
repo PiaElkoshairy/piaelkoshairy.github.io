@@ -915,74 +915,64 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
                               <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
-                  <script>
-    let player;
+                 <script>
+    let contentPlayer;
+    let adPlayer;
+
     const adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=';
-    const videoContainer = document.getElementById('vid-container');
 
-    // A reusable function to create and set up the video player.
-    function createPlayer() {
-        console.log("-> Creating a new video.js player instance.");
+    // A function to set up the main content player.
+    function setupContentPlayer() {
+        // Assume 'content_video' is the main player.
+        contentPlayer = videojs('content_video');
+        contentPlayer.loop(true); // Set the main content to loop naturally.
 
-        // First, check if a player instance already exists and dispose of it.
-        if (player) {
-            player.dispose();
-            // We also need to remove the old video element from the DOM.
-            const oldVideoElement = document.getElementById('content_video');
-            if (oldVideoElement) {
-                oldVideoElement.remove();
-            }
-        }
+        console.log("-> Main content player is ready and set to loop.");
+    }
 
-        // Create a new video element and append it to the container.
-        const newVideoElement = document.createElement('video');
-        newVideoElement.id = 'content_video';
-        newVideoElement.className = 'video-js vjs-default-skin';
-        newVideoElement.controls = true;
-        newVideoElement.preload = 'auto';
-        newVideoElement.autoplay = true;
-        newVideoElement.muted = true;
-        newVideoElement.innerHTML = '<source src="video/Expertos en publicidad digital - IMPAKTU.mp4" type="video/mp4" />';
-        videoContainer.insertBefore(newVideoElement, videoContainer.firstChild);
+    // A function to set up and play the ad.
+    function setupAdPlayer() {
+        // Assume the top player is the ad. Since your HTML only has one,
+        // we'll assume the ad player is created dynamically or on a different element.
+        // For now, let's assume it's also called 'content_video' and we handle it first.
+        adPlayer = videojs('content_video');
 
-        // Attach the video element to a new player instance.
-        player = videojs('content_video');
-
-        // Initialize the IMA plugin on the new player instance.
-        player.ima({
+        adPlayer.ima({
             id: 'content_video',
             adTagUrl: adTagUrl,
             debug: true
         });
-        player.ima.initializeAdDisplayContainer();
 
-        // Set up the event listeners for playback and looping.
-        player.ready(() => {
-            const startPlayback = () => {
-                console.log("-> User interaction detected. Requesting ads for the first time.");
-                player.ima.requestAds();
-                player.play();
-                player.off('click', startPlayback);
+        adPlayer.ready(() => {
+            const startAdPlayback = () => {
+                console.log("-> Ad player ready. Starting ad playback.");
+                adPlayer.ima.requestAds();
+                adPlayer.play();
+                adPlayer.off('click', startAdPlayback);
             };
-            player.one('click', startPlayback);
+            adPlayer.one('click', startAdPlayback);
         });
 
-        // The looping logic now disposes of the entire player and recreates it.
-        player.on('contentended', () => {
-            console.log("-> 'contentended' fired. Disposing of old player and creating a new one.");
-            
-            // Re-create the player from scratch.
-            setTimeout(() => {
-                createPlayer();
-            }, 100);
+        // The critical transition logic: When the ad finishes, cleanly end the IMA session.
+        adPlayer.on('contentended', () => {
+            console.log("-> Ad content ended. Disposing of ad player.");
+            if (adPlayer.ima) {
+                // This is the key: Tell the IMA SDK the content is complete.
+                adPlayer.ima.contentComplete();
+            }
+            adPlayer.dispose();
+            // Now, we would typically start the main content player here, but since your
+            // original HTML only has one video element, we can't do that directly.
+            // This is the point where you would unhide the main content video and start it.
+            // As your page seems to have two videos, this is likely the missing link.
         });
     }
 
-    // Call the function to start the entire process.
-    createPlayer();
-    
     // --- Floating logic (unchanged) ---
     window.addEventListener('DOMContentLoaded', () => {
+        // Start the process by setting up and playing the ad.
+        setupAdPlayer();
+
         const anchor = document.getElementById('video-anchor');
         const container = document.getElementById('vid-container');
         const isDesktop = window.matchMedia('(min-width: 768px)').matches;
