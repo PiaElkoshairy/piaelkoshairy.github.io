@@ -915,50 +915,56 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
                               <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
-                              <script>
+                             <script>
     const player = videojs('content_video');
 
     function initializeIma() {
-        // This function will be called on initial load and on every loop.
+        console.log("-> Initializing IMA plugin.");
         player.ima({
             id: 'content_video',
             adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=',
             debug: true
         });
-
         player.ima.initializeAdDisplayContainer();
+        console.log("-> IMA plugin initialized. Ready to request ads.");
     }
-
-    // Initial IMA setup
-    initializeIma();
-
+    
+    // --- Core Logic ---
     player.ready(() => {
+        // Initial setup
+        initializeIma();
+
         const startPlayback = () => {
+            console.log("-> User interaction detected. Requesting initial ads.");
             player.ima.requestAds();
             player.play();
             player.off('click', startPlayback);
         };
         player.one('click', startPlayback);
     });
-
-    // --- NEW & CORRECTED Looping Logic ---
+    
+    // --- The Correct Looping Logic ---
     player.on('ended', () => {
-        // When the content video ends, we need to reset the entire IMA session.
-        console.log("Video ended. Resetting IMA for loop.");
+        console.log("-> 'ended' event fired. Initiating loop sequence.");
 
-        // First, check if IMA has an adsManager and destroy it to clear its state.
-        if (player.ima.adsManager) {
-            player.ima.adsManager.destroy();
+        // Destroying the IMA instance. The `adsManager` is already gone.
+        // This removes the plugin completely so we can re-add it.
+        if (player.ima) {
+            player.ima.dispose();
+            console.log("-> IMA plugin disposed.");
         }
 
-        // Reset the video's current time to the beginning.
+        // Reset video to the beginning.
         player.currentTime(0);
 
-        // Re-initialize the IMA plugin to start a completely new ad session.
-        initializeIma();
-        
-        // Request ads again, which will now work because the state has been fully reset.
-        player.ima.requestAds();
+        // A slight delay is sometimes needed to prevent race conditions.
+        // This gives the player's event system a moment to clear.
+        setTimeout(() => {
+            // Re-initialize the IMA plugin from scratch.
+            initializeIma();
+            // Request ads for the new session.
+            player.ima.requestAds();
+        }, 100);
     });
 
     // --- Floating logic (unchanged) ---
