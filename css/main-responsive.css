@@ -82,6 +82,7 @@ p {
   height: auto;
   display: flex;
   margin: 0px auto;
+  margin-bottom: 1em;
   background: #d1e0df;
 }
 
@@ -403,6 +404,48 @@ p {
   color: #5a9885
 }
 
+.resume_item.resume_info {
+  background-color: #5a9885;
+}
+
+.resume_item.resume_info ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 10px;
+  padding-left: 2em;
+  color:#d1e0df;
+}
+
+.resume_item.resume_info ul li {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.resume_item.resume_info ul li .icon {
+  margin-right: 8px;
+  color:#d1e0df;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 10px;
+}
+
+.resume_item.resume_info ul li .data {
+  flex: 1;
+}
+
+.resume_item.resume_info ul li .data a {
+  color: #d1e0df;
+}
+
+.resume_item.resume_info ul li .data a:hover {
+  color:#555555;
+}
+
+
+
  /* AD CONTAINERS */ 
 
   .resume_item.resume_ads {
@@ -664,7 +707,7 @@ p {
 
   .resume_profile { order: 0; background-color: #dcdbdb;}
   .resume_item.resume_about { order: 1;}
-  .resume_item.resume_info { order: 9; }
+  .resume_item.resume_info { order: 9;}
   .resume_item.resume_skills { order: 2; padding-top: 15px; }
   .resume_item.resume_work { order: 3; }
   .resume_item.resume_education { order: 5; }
