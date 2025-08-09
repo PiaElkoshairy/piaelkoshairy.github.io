@@ -918,15 +918,22 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script>
     const player = videojs('content_video');
 
-    player.ima({
-        id: 'content_video',
-        adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=',
-        debug: true
-    });
+    function initializeIma() {
+        // This function will be called on initial load and on every loop.
+        player.ima({
+            id: 'content_video',
+            adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=',
+            debug: true
+        });
+
+        player.ima.initializeAdDisplayContainer();
+    }
+
+    // Initial IMA setup
+    initializeIma();
 
     player.ready(() => {
         const startPlayback = () => {
-            player.ima.initializeAdDisplayContainer();
             player.ima.requestAds();
             player.play();
             player.off('click', startPlayback);
@@ -936,17 +943,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- NEW & CORRECTED Looping Logic ---
     player.on('ended', () => {
-        // Use the IMA SDK's built-in methods to handle the loop.
-        // Calling this will tell the IMA plugin to end its "content" phase
-        // and prepare for the next ad break.
-        player.ima.changeAdTag(player.ima.adTagUrl); // Re-set the ad tag URL
-        player.ima.requestAds(); // Re-request the ads
+        // When the content video ends, we need to reset the entire IMA session.
+        console.log("Video ended. Resetting IMA for loop.");
 
-        // Some users also find that calling these methods from the ima plugin
-        // can help to clear the state and allow for a clean restart.
-        // It's a bit more aggressive, but can be useful.
-        // player.ima.adsManager.destroy(); // Destroy the existing adsManager
-        // player.ima.contentComplete();    // Tell the SDK the content is complete
+        // First, check if IMA has an adsManager and destroy it to clear its state.
+        if (player.ima.adsManager) {
+            player.ima.adsManager.destroy();
+        }
+
+        // Reset the video's current time to the beginning.
+        player.currentTime(0);
+
+        // Re-initialize the IMA plugin to start a completely new ad session.
+        initializeIma();
+        
+        // Request ads again, which will now work because the state has been fully reset.
+        player.ima.requestAds();
     });
 
     // --- Floating logic (unchanged) ---
