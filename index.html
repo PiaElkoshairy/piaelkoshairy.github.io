@@ -903,13 +903,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     </li>
                     </ul>
                        
-<div id="video-anchor"></div>
+                       <div id="video-anchor"></div>
 
-<!-- preroll ads and looping -->
+<!-- ✅ UPDATE #vid-container and its <script> with looping ad logic -->
 <div id="vid-container">
   <button id="close-float" style="display:none;position:absolute;top:4px;right:4px;z-index:10001;background:#000;color:#fff;border:none;padding:4px 8px;font-size:14px;cursor:pointer;">×</button>           
-  <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360" muted autoplay>
-    <!-- Source is set dynamically -->
+  <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360">
+    <!-- src will be set dynamically in JS -->
   </video>
 </div>
 
@@ -925,25 +925,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const player = videojs('content_video');
 
-  player.ima({
-    id: 'content_video',
-    adTagUrl,
-    debug: true
-  });
+  function loadContent() {
+    player.src({ type: 'video/mp4', src: contentSrc });
+  }
 
   function playAdThenContent() {
-    player.ima.setContentWithAdTag(contentSrc, adTagUrl, true);
+    if (!player.ima || typeof player.ima !== 'function') {
+      console.error('IMA plugin is not loaded');
+      loadContent();
+      player.play();
+      return;
+    }
+
+    player.ima({
+      id: 'content_video',
+      adTagUrl: adTagUrl,
+      debug: true
+    });
+
     player.ima.requestAds();
+
+    player.ima.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, () => {
+      loadContent();
+      player.play();
+    });
+
     player.play();
   }
 
   player.ready(() => {
-    if (player.ima && typeof player.ima.initializeAdDisplayContainer === 'function') {
-      player.ima.initializeAdDisplayContainer();
-    }
-    playAdThenContent();
+    player.one('click', () => {
+      if (player.ima && typeof player.ima.initializeAdDisplayContainer === 'function') {
+        player.ima.initializeAdDisplayContainer();
+        playAdThenContent();
+      } else {
+        console.error('IMA initializeAdDisplayContainer is not a function');
+        loadContent();
+        player.play();
+      }
+    });
   });
 
+  // Replay ad before each loop
   player.on('ended', () => {
     playAdThenContent();
   });
