@@ -915,7 +915,7 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
                               <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
-                             <script>
+                           <script>
     const player = videojs('content_video');
 
     function initializeIma() {
@@ -942,29 +942,24 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         player.one('click', startPlayback);
     });
-    
-    // --- The Correct Looping Logic ---
-    player.on('ended', () => {
-        console.log("-> 'ended' event fired. Initiating loop sequence.");
 
-        // Destroying the IMA instance. The `adsManager` is already gone.
-        // This removes the plugin completely so we can re-add it.
-        if (player.ima) {
-            player.ima.dispose();
-            console.log("-> IMA plugin disposed.");
-        }
+    // --- The FINAL Looping Logic ---
+    player.on('contentended', () => {
+        console.log("-> 'contentended' event fired. Initiating loop sequence.");
 
-        // Reset video to the beginning.
+        // First, reset the video to the beginning.
         player.currentTime(0);
 
-        // A slight delay is sometimes needed to prevent race conditions.
-        // This gives the player's event system a moment to clear.
-        setTimeout(() => {
-            // Re-initialize the IMA plugin from scratch.
-            initializeIma();
-            // Request ads for the new session.
-            player.ima.requestAds();
-        }, 100);
+        // Then, destroy the IMA adsManager if it exists.
+        // This is a more direct way to reset the ad session.
+        if (player.ima.adsManager) {
+            console.log("-> Destroying existing adsManager.");
+            player.ima.adsManager.destroy();
+        }
+
+        // Re-request ads. This will start a new ad session.
+        console.log("-> Requesting ads for the new loop.");
+        player.ima.requestAds();
     });
 
     // --- Floating logic (unchanged) ---
