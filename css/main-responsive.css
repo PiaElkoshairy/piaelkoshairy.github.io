@@ -757,7 +757,7 @@ p {
 
 .video-js {
     width: auto;
-    margin: 0;
+    margin: 0px !important;
 }
 
 #vid-container {
