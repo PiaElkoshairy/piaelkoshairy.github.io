@@ -915,43 +915,55 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
                               <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
-                       <script>
+                      <script>
     const player = videojs('content_video');
     const adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=';
 
-    console.log("-> Player loaded. Waiting for user interaction to start diagnostics.");
-    
-    // Core IMA initialization
-    player.ima({
-        id: 'content_video',
-        adTagUrl: adTagUrl,
-        debug: true
-    });
-    player.ima.initializeAdDisplayContainer();
+    // This function will contain the loop logic.
+    function setupLooping() {
+        console.log("-> Setting up looping functionality.");
 
-    // Start playback on user interaction
+        player.on('contentended', () => {
+            console.log("-> 'contentended' fired. Initiating loop sequence.");
+
+            // Resetting the IMA session and requesting a new ad.
+            if (player.ima) {
+                player.ima.changeAdTag(adTagUrl);
+            }
+
+            player.currentTime(0);
+
+            setTimeout(() => {
+                console.log("-> Requesting new ads for the loop.");
+                player.ima.requestAds();
+                player.play();
+            }, 500);
+        });
+    }
+
+    // --- Core Logic ---
     player.ready(() => {
+        // First, initialize the IMA plugin.
+        console.log("-> Initializing IMA plugin.");
+        player.ima({
+            id: 'content_video',
+            adTagUrl: adTagUrl,
+            debug: true
+        });
+        player.ima.initializeAdDisplayContainer();
+
+        // Now that the plugin is initialized, we can safely set up the loop.
+        setupLooping();
+
+        // Start playback on user interaction.
         const startPlayback = () => {
-            console.log("-> User interaction detected. Starting ad and content playback.");
+            console.log("-> User interaction detected. Requesting initial ads.");
             player.ima.requestAds();
             player.play();
             player.off('click', startPlayback);
         };
         player.one('click', startPlayback);
     });
-
-    // --- DIAGNOSTIC EVENT LISTENERS ---
-    // Log every relevant event to understand the player's lifecycle.
-    player.on('play', () => { console.log("EVENT: 'play' fired."); });
-    player.on('ended', () => { console.log("EVENT: 'ended' fired."); });
-    player.on('pause', () => { console.log("EVENT: 'pause' fired."); });
-    player.on('ads-ready', () => { console.log("ADS EVENT: 'ads-ready' fired."); });
-    player.on('ads-ad-started', () => { console.log("ADS EVENT: 'ads-ad-started' fired."); });
-    player.on('ads-ad-ended', () => { console.log("ADS EVENT: 'ads-ad-ended' fired."); });
-    player.on('ads-all-ads-completed', () => { console.log("ADS EVENT: 'ads-all-ads-completed' fired."); });
-    player.on('contentended', () => { console.log("ADS EVENT: 'contentended' fired."); });
-    player.on('adserror', (e) => { console.error("ADS EVENT: 'adserror' fired!", e); });
-    player.ima.on('contentended', () => { console.log("IMA EVENT: 'contentended' fired."); });
     
     // --- Floating logic (unchanged) ---
     window.addEventListener('DOMContentLoaded', () => {
