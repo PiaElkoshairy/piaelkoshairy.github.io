@@ -903,91 +903,91 @@ document.addEventListener('DOMContentLoaded', function () {
                     </li>
                     </ul>
                        
-                            <div id="video-anchor">
-                        <div id="vid-container">
-                          <button id="close-float" style="display:none;position:absolute;top:4px;right:4px;z-index:10001;background:#000;color:#fff;border:none;padding:4px 8px;font-size:14px;cursor:pointer;">×</button>           
-                          <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360">
-                            <!-- src set dynamically in JS -->
-                          </video>
-                        </div>
+<div id="video-anchor">
+<div id="vid-container">
+  <button id="close-float" style="display:none;position:absolute;top:4px;right:4px;z-index:10001;background:#000;color:#fff;border:none;padding:4px 8px;font-size:14px;cursor:pointer;">×</button>           
+  <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360">
+    <!-- src set dynamically in JS -->
+  </video>
+</div>
 
-                        <!-- IMA/Video.js dependencies -->
-                        <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-                        <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
-                        <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
-                        <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
+<!-- IMA/Video.js dependencies -->
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+<script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
-                        <script>
-                          const adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&unviewed_position_start=1&correlator=';
-                          const contentSrc = 'video/Expertos en publicidad digital - IMPAKTU.mp4';
+<script>
+  const adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&unviewed_position_start=1&correlator=';
+  const contentSrc = 'video/Expertos en publicidad digital - IMPAKTU.mp4';
 
-                          const player = videojs('content_video');
+  const player = videojs('content_video');
 
-                          function loadContent() {
-                            player.src({ type: 'video/mp4', src: contentSrc });
-                          }
+  function loadContent() {
+    player.src({ type: 'video/mp4', src: contentSrc });
+  }
 
-                          function playAdThenContent() {
-                            player.ima({
-                              id: 'content_video',
-                              adTagUrl: adTagUrl,
-                              debug: true
-                            });
+  function playAdThenContent() {
+    player.ima({
+      id: 'content_video',
+      adTagUrl: adTagUrl,
+      debug: true
+    });
 
-                            player.ima.requestAds();
+    player.ima.requestAds();
 
-                            player.ima.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, () => {
-                              loadContent();
-                              player.play();
-                            });
+    player.ima.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, () => {
+      loadContent();
+      player.play();
+    });
 
-                            player.play();
-                          }
+    player.play();
+  }
 
-                          player.ready(() => {
-                            player.one('click', () => {
-                              player.ima.initializeAdDisplayContainer();
-                              playAdThenContent();
-                            });
-                          });
+  player.ready(() => {
+    player.one('click', () => {
+      player.ima.initializeAdDisplayContainer();
+      playAdThenContent();
+    });
+  });
 
-                          // Replay ad before each loop
-                          player.on('ended', () => {
-                            playAdThenContent();
-                          });
+  // Replay ad before each loop
+  player.on('ended', () => {
+    playAdThenContent();
+  });
 
-                          // Floating logic
-                          window.addEventListener('DOMContentLoaded', () => {
-                            const anchor = document.getElementById('video-anchor');
-                            const container = document.getElementById('vid-container');
-                            const isDesktop = window.matchMedia('(min-width: 768px)').matches;
-                            if (!isDesktop) return;
+  // Floating logic
+  window.addEventListener('DOMContentLoaded', () => {
+    const anchor = document.getElementById('video-anchor');
+    const container = document.getElementById('vid-container');
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+    if (!isDesktop) return;
 
-                            const observer = new IntersectionObserver(
-                              ([entry]) => {
-                                if (!entry.isIntersecting) {
-                                  container.classList.add('floating');
-                                  document.getElementById('close-float').style.display = 'block';
-                                } else {
-                                  container.classList.remove('floating');
-                                  document.getElementById('close-float').style.display = 'none';
-                                }
-                              },
-                              { threshold: 0 }
-                            );
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          container.classList.add('floating');
+          document.getElementById('close-float').style.display = 'block';
+        } else {
+          container.classList.remove('floating');
+          document.getElementById('close-float').style.display = 'none';
+        }
+      },
+      { threshold: 0 }
+    );
 
-                            observer.observe(anchor);
+    observer.observe(anchor);
 
-                            const closeBtn = document.getElementById('close-float');
-                            closeBtn.addEventListener('click', () => {
-                              container.classList.remove('floating');
-                              closeBtn.style.display = 'none';
-                            });
-                          });
-                        </script>
+    const closeBtn = document.getElementById('close-float');
+    closeBtn.addEventListener('click', () => {
+      container.classList.remove('floating');
+      closeBtn.style.display = 'none';
+    });
+  });
+</script>
 
                          </div>
-                 
+                         </div>
                     
                 
                 <p class="bold"><span>Maastricht School of Management</span> </p>
