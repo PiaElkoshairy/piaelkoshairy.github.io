@@ -472,15 +472,15 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </div>
 
-<div class="resume" style="">
+<div class="resume">
   
    <div class="resume_left">
      <div class="resume_profile">
        <img src="images/IMG_0498.PNG" alt="profile_pic">
      </div>
-     <div class="divider-left" style=""><p>RESUME</p></div>
+     <div class="divider-left"><p>RESUME</p></div>
      <div class="resume_content">
-       <div class="resume_item resume_info" style="">
+       <div class="resume_item resume_info">
          <ul>
            <li>
              <div class="icon">
@@ -758,14 +758,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     <div class="resume_right">
-            <div class="resume_profile" style="">
+            <div class="resume_profile" >
                 <h1>PIA ELKOSHAIRY</h1>
                 <!--<p class="bold" style="font-size: 12px; font-weight: 100;">Sr Manager Technical Ad Solutions</p> --> 
                 <div class="resume_item resume_about" style="padding-top: 10px; font-weight: lighter;">
                     <p>12 YEARS EXPERIENCE IN THE AD TECH INDUSTRY, WORKING WITH PREMIUM ADVERTISERS AND PUBLISHERS ACROSS THE AMERICAS, JAPAC, AND EMEA. HEADING UP CROSS-BORDER TEAMS OF ADOPS/TECHOPS SPECIALISTS, ENGINEERS, AND FRONT-END DEVS.</p>
                 </div>
             </div>
-            <div class="divider-right" style="">
+            <div class="divider-right">
                 <p></p>
             </div>
         <div class="resume_content">
@@ -915,60 +915,53 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
                               <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
-                      <script>
-    const player = videojs('content_video');
+                    <script>
+    let player;
     const adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=';
 
-    // A function to completely initialize a new IMA plugin instance.
-    function initializeIma() {
-        console.log("-> Initializing a new IMA plugin instance.");
+    // A reusable function to create and set up the video player.
+    function createPlayer() {
+        console.log("-> Creating a new video.js player instance.");
+
+        // Attach the video element to a new player instance.
+        player = videojs('content_video');
+
+        // Initialize the IMA plugin on the new player instance.
         player.ima({
             id: 'content_video',
             adTagUrl: adTagUrl,
             debug: true
         });
         player.ima.initializeAdDisplayContainer();
-        console.log("-> IMA plugin initialized. Ready to request ads.");
-    }
-    
-    // --- Core Logic ---
-    player.ready(() => {
-        // Initial setup of the IMA plugin.
-        initializeIma();
 
-        const startPlayback = () => {
-            console.log("-> User interaction detected. Requesting initial ads.");
-            player.ima.requestAds();
-            player.play();
-            player.off('click', startPlayback);
-        };
-        player.one('click', startPlayback);
-    });
+        // Set up the event listeners for playback and looping.
+        player.ready(() => {
+            const startPlayback = () => {
+                console.log("-> User interaction detected. Requesting ads for the first time.");
+                player.ima.requestAds();
+                player.play();
+                player.off('click', startPlayback);
+            };
+            player.one('click', startPlayback);
+        });
 
-    // --- The FINAL, DEFINITIVE Looping Logic ---
-    player.on('contentended', () => {
-        console.log("-> 'contentended' event fired. Initiating loop sequence.");
-
-        // First, dispose of the current IMA instance to completely reset its state.
-        if (player.ima) {
-            console.log("-> Disposing of the current IMA plugin instance.");
-            player.ima.dispose();
-        }
-
-        // Reset the video's current time.
-        player.currentTime(0);
-
-        // A slight delay is crucial. This gives the video.js player time to fully
-        // dispose of the old IMA instance before a new one is created.
-        setTimeout(() => {
-            // Re-initialize the IMA plugin from scratch.
-            initializeIma();
+        // The looping logic now disposes of the entire player and recreates it.
+        player.on('contentended', () => {
+            console.log("-> 'contentended' fired. Disposing of old player and creating a new one.");
             
-            // Now that we have a fresh ad instance, request the new ads.
-            console.log("-> Re-initializing IMA and requesting ads for the new loop.");
-            player.ima.requestAds();
-        }, 500);
-    });
+            // Dispose of the current player instance.
+            player.dispose();
+
+            // Use a slight delay before creating the new player.
+            // This gives the browser a moment to clean up resources.
+            setTimeout(() => {
+                createPlayer();
+            }, 100);
+        });
+    }
+
+    // Call the function to start the entire process.
+    createPlayer();
     
     // --- Floating logic (unchanged) ---
     window.addEventListener('DOMContentLoaded', () => {
@@ -1063,7 +1056,7 @@ document.addEventListener('DOMContentLoaded', function () {
                      <li>
                        <div class="data">
                          <p class="semi-bold">2017 <span>/ IAB Digital Video Glossary Comittee</span></p>
-                         <p>CIM & IAB México - <a class="custom-link" href="https://www.glosariodigital.mx/" style ="" target="_blank">Glosariodigital.mx</a></p>
+                         <p>CIM & IAB México - <a class="custom-link" href="https://www.glosariodigital.mx/" target="_blank">Glosariodigital.mx</a></p>
                        </div>
                      </li> 
                      <li>
