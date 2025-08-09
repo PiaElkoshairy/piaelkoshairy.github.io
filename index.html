@@ -905,7 +905,7 @@ document.addEventListener('DOMContentLoaded', function () {
                        
 <div id="video-anchor"></div>
 
-<!-- ✅ UPDATE #vid-container and its <script> with preroll ads and looping -->
+<!-- preroll ads and looping -->
 <div id="vid-container">
   <button id="close-float" style="display:none;position:absolute;top:4px;right:4px;z-index:10001;background:#000;color:#fff;border:none;padding:4px 8px;font-size:14px;cursor:pointer;">×</button>           
   <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360" muted autoplay>
@@ -933,17 +933,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function playAdThenContent() {
     player.ima.setContentWithAdTag(contentSrc, adTagUrl, true);
-    player.ima.initializeAdDisplayContainer();
     player.ima.requestAds();
     player.play();
   }
 
   player.ready(() => {
+    if (player.ima && typeof player.ima.initializeAdDisplayContainer === 'function') {
+      player.ima.initializeAdDisplayContainer();
+    }
     playAdThenContent();
   });
 
   player.on('ended', () => {
-    player.reset();
     playAdThenContent();
   });
 
