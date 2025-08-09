@@ -918,62 +918,51 @@ document.addEventListener('DOMContentLoaded', function () {
 <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
 <script>
-  const adTagBase = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&unviewed_position_start=1&correlator=';
   const contentSrc = 'video/Expertos en publicidad digital - IMPAKTU.mp4';
+  const getAdTagUrl = () => {
+  const correlator = Date.now();
+  return `https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&unviewed_position_start=1&correlator=${correlator}`;
+};
 
   let player;
 
   function initPlayer() {
-    const fullAdTag = adTagBase + Date.now();
+  const fullAdTag = getAdTagUrl();
+  const videoContainer = document.getElementById('vid-container');
+  videoContainer.innerHTML = `
+    <button id="close-float" style="display:none;position:absolute;top:4px;right:4px;z-index:10001;background:#000;color:#fff;border:none;padding:4px 8px;font-size:14px;cursor:pointer;">×</button>
+    <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360" muted autoplay></video>
+  `;
 
-    // Clean up existing player if exists
-    if (player && typeof player.dispose === 'function') {
-      player.dispose();
-    }
+  player = videojs('content_video', {
+    autoplay: true,
+    muted: true,
+    controls: true,
+    sources: []
+  });
 
-    const videoContainer = document.getElementById('vid-container');
-    videoContainer.innerHTML = `
-      <button id="close-float" style="display:none;position:absolute;top:4px;right:4px;z-index:10001;background:#000;color:#fff;border:none;padding:4px 8px;font-size:14px;cursor:pointer;">×</button>
-      <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360" muted autoplay></video>
-    `;
+  player.ima({
+    id: 'content_video',
+    adTagUrl: fullAdTag,
+    debug: true
+  });
 
-    player = videojs('content_video', {
-      autoplay: true,
-      muted: true,
-      controls: true,
-      sources: [{
-        src: contentSrc,
-        type: 'video/mp4'
-      }]
-    });
+  player.ready(() => {
+    player.ima.initializeAdDisplayContainer();
+    player.ima.setContentWithAdTag(contentSrc, 'video/mp4');
+    player.ima.requestAds();
+  });
 
-    player.ima({
-      id: 'content_video',
-      adTagUrl: fullAdTag,
-      debug: true
-    });
+  player.on('adend', () => {
+    player.src({ src: contentSrc, type: 'video/mp4' });
+    player.play();
+  });
 
-    player.ready(() => {
-      player.ima.initializeAdDisplayContainer();
-      player.ima.requestAds();
-
-      // DEBUG LOGGING
-      player.ima.addEventListener(google.ima.AdEvent.Type.LOADED, () => {
-        console.log('[IMA] Ad loaded');
-      });
-      player.ima.addEventListener(google.ima.AdEvent.Type.STARTED, () => {
-        console.log('[IMA] Ad started');
-      });
-      player.ima.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, (e) => {
-        console.warn('[IMA] Ad error:', e.getError());
-      });
-    });
-
-    player.on('ended', () => {
-      setTimeout(() => {
-        initPlayer();
-      }, 500);
-    });
+  player.on('ended', () => {
+    player.ima.adsLoader.contentComplete();
+    player.ima.setContentWithAdTag(contentSrc, 'video/mp4');
+    player.ima.requestAds();
+  });
   }
 
   window.addEventListener('DOMContentLoaded', () => {
@@ -1007,6 +996,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 </script>
+
 
                          </div>
                  
