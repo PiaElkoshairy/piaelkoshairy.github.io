@@ -917,32 +917,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 <script>
     const player = videojs('content_video');
-    const adTagBaseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&';
+    const adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=';
 
-    // A reusable function to get an ad tag with a unique correlator.
-    function getNewAdTag() {
-        const correlator = 'correlator=' + Date.now();
-        return adTagBaseUrl + correlator;
-    }
+    player.ima({
+        id: 'content_video',
+        adTagUrl: adTagUrl,
+        debug: true
+    });
+    player.ima.initializeAdDisplayContainer();
 
-    // A reusable function to handle the IMA initialization.
-    function initializeIma() {
-        console.log("-> Initializing a new IMA session.");
-        player.ima({
-            id: 'content_video',
-            adTagUrl: getNewAdTag(),
-            debug: true
-        });
-        player.ima.initializeAdDisplayContainer();
-    }
-
-    // --- Core Logic ---
     player.ready(() => {
-        // Initial setup of the IMA plugin.
-        initializeIma();
-
         const startPlayback = () => {
-            console.log("-> User interaction detected. Requesting initial ads.");
             player.ima.requestAds();
             player.play();
             player.off('click', startPlayback);
@@ -950,26 +935,6 @@ document.addEventListener('DOMContentLoaded', function () {
         player.one('click', startPlayback);
     });
 
-    // --- The Definitive Looping Logic ---
-    player.on('contentended', () => {
-        console.log("-> 'contentended' event fired. Initiating loop sequence.");
-
-        // First, reset the video to the beginning.
-        player.currentTime(0);
-
-        // Then, destroy the previous ad manager to start a clean session.
-        if (player.ima.adsManager) {
-            console.log("-> Destroying existing adsManager.");
-            player.ima.adsManager.destroy();
-        }
-
-        // Re-initialize the IMA plugin with a new ad tag.
-        initializeIma();
-
-        // Re-request ads, which will now work because the state has been fully reset.
-        player.ima.requestAds();
-    });
-    
     // --- Floating logic (unchanged) ---
     window.addEventListener('DOMContentLoaded', () => {
         const anchor = document.getElementById('video-anchor');
