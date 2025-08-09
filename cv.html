@@ -915,7 +915,7 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
                               <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
-                          <script>
+                         <script>
     const player = videojs('content_video');
 
     function initializeIma() {
@@ -946,20 +946,20 @@ document.addEventListener('DOMContentLoaded', function () {
     player.on('contentended', () => {
         console.log("-> 'contentended' event fired. Initiating loop sequence.");
 
-        // First, tell the IMA SDK that the content has officially completed.
-        // This is a crucial step to signal to the ad plugin to finish its session.
-        player.ima.contentComplete();
+        // The correct way to reset is by using the contrib-ads plugin's method.
+        // This clears the ad tracking state and gets it ready for a new session.
+        player.ads.resetAdTracking();
 
         // Reset the video to the beginning.
         player.currentTime(0);
 
-        // We need a slight delay to allow the IMA plugin to finish its internal
-        // cleanup before we try to start a new ad session. This prevents the
-        // "Unexpected adsready event" warning.
+        // Request ads for the new session and then start playback.
+        // A slight delay helps prevent race conditions.
         setTimeout(() => {
             console.log("-> Requesting new ads after timeout.");
             player.ima.requestAds();
-        }, 500); // A 500ms delay is usually sufficient. Adjust if needed.
+            player.play();
+        }, 500);
     });
 
     // --- Floating logic (unchanged) ---
