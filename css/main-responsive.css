@@ -458,7 +458,7 @@ p {
 /* IMA SDK video ad container */ 
 
 .video-js {
-    margin: 20px auto;
+    
     width: 480px;
     height: 100%;
     display: flex;
@@ -753,11 +753,6 @@ p {
 
  .gam-container-mpu {
     display: flex;    
-}
-
-.video-js {
-    width: auto;
-    margin: 0px !important;
 }
 
 #vid-container {
