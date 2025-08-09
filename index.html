@@ -422,6 +422,10 @@ document.addEventListener('DOMContentLoaded', function () {
 <link rel="stylesheet" href="https://googleads.github.io/videojs-ima/node_modules/video.js/dist/video-js.min.css" />
     <link rel="stylesheet" href="https://googleads.github.io/videojs-ima/node_modules/videojs-contrib-ads/dist/videojs.ads.css" />
     <link rel="stylesheet" href="https://googleads.github.io/videojs-ima/dist/videojs.ima.css" />
+
+<style>
+  ul { padding: 0px !important;}
+</style>
 </head>
 
 <body class="is-preload">
@@ -455,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
    <div class="resume_left">
      <div class="resume_profile">
-       <img src="images/IMG_0498.PNG" alt="profile_pic">
+       <img src="images/cookies.jpeg" alt="profile_pic">
      </div>
      <div class="divider-left" style=""><p>Lorem ipsum</p></div>
      <div class="resume_content">
@@ -474,7 +478,7 @@ document.addEventListener('DOMContentLoaded', function () {
                <i class="fas fa-paper-plane"></i>
              </div>
              <div class="data">
-               <a href="mailto:pia.elkoshairy@gmail.com">pia.elkoshairy@gmail.com</a>
+               <a href="mailto:pia.elkoshairy@gmail.com">sample@email.com</a>
              </div>
            </li> 
            <li>
@@ -482,7 +486,7 @@ document.addEventListener('DOMContentLoaded', function () {
                <i class="fa-solid fa-mobile-screen-button"></i>
              </div>
              <div class="data">
-               +31 (0)6 19751333
+               +31 (0)6 12341234
              </div>
            </li>
            <li>
@@ -495,8 +499,8 @@ document.addEventListener('DOMContentLoaded', function () {
            </li> 
          </ul>
        </div>
-
-       <div class="resume_item resume_skills">
+<!-- 
+<div class="resume_item resume_skills">
         <div class="title">
           <p class="bold">Lorem ipsum</p>
         </div>
@@ -509,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function () {
               <span style="width: 100%;"></span>
             </div>
             
-          </li>
+          </li>       
           <li>
             <div class="skill_name">
               Lorem ipsum
@@ -547,7 +551,7 @@ document.addEventListener('DOMContentLoaded', function () {
           
           </li>
         </ul>
-      </div>
+      </div> -->
 
        <div class="resume_item resume_skills">
         <div class="title">
@@ -740,7 +744,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="resume_profile" style="">
                 <h1>LOREM IPSUM</h1>
                 <div class="resume_item resume_about" style="padding-top: 10px; font-weight: lighter;">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </div>
             </div>
             <div class="divider-right" style="">
@@ -771,6 +775,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 </p>
 
+
 <p class="expand"><a>Lorem ipsum +</a>
 <br>
 <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -778,7 +783,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 </p>
-                        </div>
+
+                          <img src="images/gg-image.png" style="width: 100%">
                     </li>
                     <li>
                   <li>
@@ -803,6 +809,15 @@ document.addEventListener('DOMContentLoaded', function () {
 <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 </p>
+
+  <div id="video-anchor">
+                          <div id="vid-container">
+                              <button id="close-float" style="display:none;position:absolute;top:4px;right:4px;z-index:10001;background:#000;color:#fff;border:none;padding:4px 8px;font-size:14px;cursor:pointer;">×</button>           
+                              <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" autoplay muted>
+                                <source src="video/Expertos en publicidad digital - IMPAKTU.mp4" type="video/mp4" />
+                              </video>
+                        </div>
+
                         </div>
                     </li>
                     <li>
@@ -876,12 +891,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                     </li>
                     </ul>
-                          <div id="video-anchor">
-                          <div id="vid-container">
-                              <button id="close-float" style="display:none;position:absolute;top:4px;right:4px;z-index:10001;background:#000;color:#fff;border:none;padding:4px 8px;font-size:14px;cursor:pointer;">×</button>           
-                              <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" autoplay muted>
-                                <source src="video/Expertos en publicidad digital - IMPAKTU.mp4" type="video/mp4" />
-                              </video>
+
 
                               <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
                               <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
