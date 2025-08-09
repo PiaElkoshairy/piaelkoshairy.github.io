@@ -919,43 +919,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const player = videojs('content_video');
     const adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=';
 
-    // This function will contain the loop logic.
-    function setupLooping() {
-        console.log("-> Setting up looping functionality.");
-
-        player.on('contentended', () => {
-            console.log("-> 'contentended' fired. Initiating loop sequence.");
-
-            // Resetting the IMA session and requesting a new ad.
-            if (player.ima) {
-                player.ima.changeAdTag(adTagUrl);
-            }
-
-            player.currentTime(0);
-
-            setTimeout(() => {
-                console.log("-> Requesting new ads for the loop.");
-                player.ima.requestAds();
-                player.play();
-            }, 500);
-        });
-    }
-
-    // --- Core Logic ---
-    player.ready(() => {
-        // First, initialize the IMA plugin.
-        console.log("-> Initializing IMA plugin.");
+    // A function to completely initialize a new IMA plugin instance.
+    function initializeIma() {
+        console.log("-> Initializing a new IMA plugin instance.");
         player.ima({
             id: 'content_video',
             adTagUrl: adTagUrl,
             debug: true
         });
         player.ima.initializeAdDisplayContainer();
+        console.log("-> IMA plugin initialized. Ready to request ads.");
+    }
+    
+    // --- Core Logic ---
+    player.ready(() => {
+        // Initial setup of the IMA plugin.
+        initializeIma();
 
-        // Now that the plugin is initialized, we can safely set up the loop.
-        setupLooping();
-
-        // Start playback on user interaction.
         const startPlayback = () => {
             console.log("-> User interaction detected. Requesting initial ads.");
             player.ima.requestAds();
@@ -963,6 +943,31 @@ document.addEventListener('DOMContentLoaded', function () {
             player.off('click', startPlayback);
         };
         player.one('click', startPlayback);
+    });
+
+    // --- The FINAL, DEFINITIVE Looping Logic ---
+    player.on('contentended', () => {
+        console.log("-> 'contentended' event fired. Initiating loop sequence.");
+
+        // First, dispose of the current IMA instance to completely reset its state.
+        if (player.ima) {
+            console.log("-> Disposing of the current IMA plugin instance.");
+            player.ima.dispose();
+        }
+
+        // Reset the video's current time.
+        player.currentTime(0);
+
+        // A slight delay is crucial. This gives the video.js player time to fully
+        // dispose of the old IMA instance before a new one is created.
+        setTimeout(() => {
+            // Re-initialize the IMA plugin from scratch.
+            initializeIma();
+            
+            // Now that we have a fresh ad instance, request the new ads.
+            console.log("-> Re-initializing IMA and requesting ads for the new loop.");
+            player.ima.requestAds();
+        }, 500);
     });
     
     // --- Floating logic (unchanged) ---
