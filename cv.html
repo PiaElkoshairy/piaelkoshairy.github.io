@@ -915,7 +915,7 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
                               <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
-                           <script>
+                          <script>
     const player = videojs('content_video');
 
     function initializeIma() {
@@ -931,7 +931,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // --- Core Logic ---
     player.ready(() => {
-        // Initial setup
         initializeIma();
 
         const startPlayback = () => {
@@ -943,23 +942,24 @@ document.addEventListener('DOMContentLoaded', function () {
         player.one('click', startPlayback);
     });
 
-    // --- The FINAL Looping Logic ---
+    // --- The FINAL, FINAL Looping Logic ---
     player.on('contentended', () => {
         console.log("-> 'contentended' event fired. Initiating loop sequence.");
 
-        // First, reset the video to the beginning.
+        // First, tell the IMA SDK that the content has officially completed.
+        // This is a crucial step to signal to the ad plugin to finish its session.
+        player.ima.contentComplete();
+
+        // Reset the video to the beginning.
         player.currentTime(0);
 
-        // Then, destroy the IMA adsManager if it exists.
-        // This is a more direct way to reset the ad session.
-        if (player.ima.adsManager) {
-            console.log("-> Destroying existing adsManager.");
-            player.ima.adsManager.destroy();
-        }
-
-        // Re-request ads. This will start a new ad session.
-        console.log("-> Requesting ads for the new loop.");
-        player.ima.requestAds();
+        // We need a slight delay to allow the IMA plugin to finish its internal
+        // cleanup before we try to start a new ad session. This prevents the
+        // "Unexpected adsready event" warning.
+        setTimeout(() => {
+            console.log("-> Requesting new ads after timeout.");
+            player.ima.requestAds();
+        }, 500); // A 500ms delay is usually sufficient. Adjust if needed.
     });
 
     // --- Floating logic (unchanged) ---
