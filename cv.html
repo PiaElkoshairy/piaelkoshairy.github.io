@@ -915,64 +915,63 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
                               <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
-                 <script>
-    let contentPlayer;
-    let adPlayer;
+                <script>
+    const player = videojs('content_video');
+    const adTagBaseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&';
 
-    const adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=';
-
-    // A function to set up the main content player.
-    function setupContentPlayer() {
-        // Assume 'content_video' is the main player.
-        contentPlayer = videojs('content_video');
-        contentPlayer.loop(true); // Set the main content to loop naturally.
-
-        console.log("-> Main content player is ready and set to loop.");
+    // A reusable function to get an ad tag with a unique correlator.
+    function getNewAdTag() {
+        const correlator = 'correlator=' + Date.now();
+        return adTagBaseUrl + correlator;
     }
 
-    // A function to set up and play the ad.
-    function setupAdPlayer() {
-        // Assume the top player is the ad. Since your HTML only has one,
-        // we'll assume the ad player is created dynamically or on a different element.
-        // For now, let's assume it's also called 'content_video' and we handle it first.
-        adPlayer = videojs('content_video');
-
-        adPlayer.ima({
+    // A reusable function to handle the IMA initialization.
+    function initializeIma() {
+        console.log("-> Initializing a new IMA session.");
+        player.ima({
             id: 'content_video',
-            adTagUrl: adTagUrl,
+            adTagUrl: getNewAdTag(),
             debug: true
         });
-
-        adPlayer.ready(() => {
-            const startAdPlayback = () => {
-                console.log("-> Ad player ready. Starting ad playback.");
-                adPlayer.ima.requestAds();
-                adPlayer.play();
-                adPlayer.off('click', startAdPlayback);
-            };
-            adPlayer.one('click', startAdPlayback);
-        });
-
-        // The critical transition logic: When the ad finishes, cleanly end the IMA session.
-        adPlayer.on('contentended', () => {
-            console.log("-> Ad content ended. Disposing of ad player.");
-            if (adPlayer.ima) {
-                // This is the key: Tell the IMA SDK the content is complete.
-                adPlayer.ima.contentComplete();
-            }
-            adPlayer.dispose();
-            // Now, we would typically start the main content player here, but since your
-            // original HTML only has one video element, we can't do that directly.
-            // This is the point where you would unhide the main content video and start it.
-            // As your page seems to have two videos, this is likely the missing link.
-        });
+        player.ima.initializeAdDisplayContainer();
     }
 
+    // --- Core Logic ---
+    player.ready(() => {
+        // Initial setup of the IMA plugin.
+        initializeIma();
+
+        const startPlayback = () => {
+            console.log("-> User interaction detected. Requesting initial ads.");
+            player.ima.requestAds();
+            player.play();
+            player.off('click', startPlayback);
+        };
+        player.one('click', startPlayback);
+    });
+
+    // --- The Definitive Looping Logic ---
+    player.on('contentended', () => {
+        console.log("-> 'contentended' event fired. Initiating loop sequence.");
+
+        // First, reset the video to the beginning.
+        player.currentTime(0);
+
+        // Then, destroy the previous ad manager to start a clean session.
+        if (player.ima.adsManager) {
+            console.log("-> Destroying existing adsManager.");
+            player.ima.adsManager.destroy();
+        }
+
+        // Re-initialize the IMA plugin with a new ad tag.
+        initializeIma();
+
+        // Re-request ads, which will now work because the state has been fully reset.
+        player.ima.requestAds();
+    });
+    
     // --- Floating logic (unchanged) ---
     window.addEventListener('DOMContentLoaded', () => {
-        // Start the process by setting up and playing the ad.
-        setupAdPlayer();
-
         const anchor = document.getElementById('video-anchor');
         const container = document.getElementById('vid-container');
         const isDesktop = window.matchMedia('(min-width: 768px)').matches;
