@@ -915,13 +915,35 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
                               <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
-                    <script>
+                   <script>
     let player;
     const adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=';
+    const videoContainer = document.getElementById('vid-container');
 
     // A reusable function to create and set up the video player.
     function createPlayer() {
         console.log("-> Creating a new video.js player instance.");
+
+        // First, check if a player instance already exists and dispose of it.
+        if (player) {
+            player.dispose();
+            // We also need to remove the old video element from the DOM.
+            const oldVideoElement = document.getElementById('content_video');
+            if (oldVideoElement) {
+                oldVideoElement.remove();
+            }
+        }
+
+        // Create a new video element and append it to the container.
+        const newVideoElement = document.createElement('video');
+        newVideoElement.id = 'content_video';
+        newVideoElement.className = 'video-js vjs-default-skin';
+        newVideoElement.controls = true;
+        newVideoElement.preload = 'auto';
+        newVideoElement.autoplay = true;
+        newVideoElement.muted = true;
+        newVideoElement.innerHTML = '<source src="video/Expertos en publicidad digital - IMPAKTU.mp4" type="video/mp4" />';
+        videoContainer.insertBefore(newVideoElement, videoContainer.firstChild);
 
         // Attach the video element to a new player instance.
         player = videojs('content_video');
@@ -949,11 +971,7 @@ document.addEventListener('DOMContentLoaded', function () {
         player.on('contentended', () => {
             console.log("-> 'contentended' fired. Disposing of old player and creating a new one.");
             
-            // Dispose of the current player instance.
-            player.dispose();
-
-            // Use a slight delay before creating the new player.
-            // This gives the browser a moment to clean up resources.
+            // Re-create the player from scratch.
             setTimeout(() => {
                 createPlayer();
             }, 100);
