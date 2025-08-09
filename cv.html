@@ -915,26 +915,24 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@6.9.0/dist/videojs.ads.min.js"></script>
                               <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
-                         <script>
+                       <script>
     const player = videojs('content_video');
+    const adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=';
 
-    function initializeIma() {
-        console.log("-> Initializing IMA plugin.");
-        player.ima({
-            id: 'content_video',
-            adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=',
-            debug: true
-        });
-        player.ima.initializeAdDisplayContainer();
-        console.log("-> IMA plugin initialized. Ready to request ads.");
-    }
+    console.log("-> Player loaded. Waiting for user interaction to start diagnostics.");
     
-    // --- Core Logic ---
-    player.ready(() => {
-        initializeIma();
+    // Core IMA initialization
+    player.ima({
+        id: 'content_video',
+        adTagUrl: adTagUrl,
+        debug: true
+    });
+    player.ima.initializeAdDisplayContainer();
 
+    // Start playback on user interaction
+    player.ready(() => {
         const startPlayback = () => {
-            console.log("-> User interaction detected. Requesting initial ads.");
+            console.log("-> User interaction detected. Starting ad and content playback.");
             player.ima.requestAds();
             player.play();
             player.off('click', startPlayback);
@@ -942,26 +940,19 @@ document.addEventListener('DOMContentLoaded', function () {
         player.one('click', startPlayback);
     });
 
-    // --- The FINAL, FINAL Looping Logic ---
-    player.on('contentended', () => {
-        console.log("-> 'contentended' event fired. Initiating loop sequence.");
-
-        // The correct way to reset is by using the contrib-ads plugin's method.
-        // This clears the ad tracking state and gets it ready for a new session.
-        player.ads.resetAdTracking();
-
-        // Reset the video to the beginning.
-        player.currentTime(0);
-
-        // Request ads for the new session and then start playback.
-        // A slight delay helps prevent race conditions.
-        setTimeout(() => {
-            console.log("-> Requesting new ads after timeout.");
-            player.ima.requestAds();
-            player.play();
-        }, 500);
-    });
-
+    // --- DIAGNOSTIC EVENT LISTENERS ---
+    // Log every relevant event to understand the player's lifecycle.
+    player.on('play', () => { console.log("EVENT: 'play' fired."); });
+    player.on('ended', () => { console.log("EVENT: 'ended' fired."); });
+    player.on('pause', () => { console.log("EVENT: 'pause' fired."); });
+    player.on('ads-ready', () => { console.log("ADS EVENT: 'ads-ready' fired."); });
+    player.on('ads-ad-started', () => { console.log("ADS EVENT: 'ads-ad-started' fired."); });
+    player.on('ads-ad-ended', () => { console.log("ADS EVENT: 'ads-ad-ended' fired."); });
+    player.on('ads-all-ads-completed', () => { console.log("ADS EVENT: 'ads-all-ads-completed' fired."); });
+    player.on('contentended', () => { console.log("ADS EVENT: 'contentended' fired."); });
+    player.on('adserror', (e) => { console.error("ADS EVENT: 'adserror' fired!", e); });
+    player.ima.on('contentended', () => { console.log("IMA EVENT: 'contentended' fired."); });
+    
     // --- Floating logic (unchanged) ---
     window.addEventListener('DOMContentLoaded', () => {
         const anchor = document.getElementById('video-anchor');
