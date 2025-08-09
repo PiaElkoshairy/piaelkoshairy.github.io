@@ -920,19 +920,20 @@ document.addEventListener('DOMContentLoaded', function () {
 <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
 <script>
-  const adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&unviewed_position_start=1&correlator=';
+  const adTagBase = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&unviewed_position_start=1&correlator=';
   const contentSrc = 'video/Expertos en publicidad digital - IMPAKTU.mp4';
 
   const player = videojs('content_video');
 
   player.ima({
     id: 'content_video',
-    adTagUrl,
+    adTagUrl: adTagBase,
     debug: true
   });
 
   function playAdThenContent() {
-    player.ima.setContentWithAdTag(contentSrc, adTagUrl, true);
+    const fullAdTag = adTagBase + Date.now(); // Fresh correlator each time
+    player.ima.setContentWithAdTag(contentSrc, fullAdTag, true);
     player.ima.initializeAdDisplayContainer();
     player.ima.requestAds();
     player.play();
