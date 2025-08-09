@@ -908,9 +908,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- ✅ UPDATE #vid-container and its <script> with preroll ads and looping -->
 <div id="vid-container">
   <button id="close-float" style="display:none;position:absolute;top:4px;right:4px;z-index:10001;background:#000;color:#fff;border:none;padding:4px 8px;font-size:14px;cursor:pointer;">×</button>           
-  <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360" muted autoplay>
-    <source src="video/Expertos en publicidad digital - IMPAKTU.mp4" type="video/mp4">
-  </video>
+  <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360" muted autoplay></video>
 </div>
 
 <!-- IMA/Video.js dependencies -->
@@ -923,37 +921,64 @@ document.addEventListener('DOMContentLoaded', function () {
   const adTagBase = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&unviewed_position_start=1&correlator=';
   const contentSrc = 'video/Expertos en publicidad digital - IMPAKTU.mp4';
 
-  const player = videojs('content_video');
+  let player;
 
-  player.ima({
-    id: 'content_video',
-    adTagUrl: adTagBase,
-    debug: true
-  });
-
-  function playAdThenContent() {
+  function initPlayer() {
     const fullAdTag = adTagBase + Date.now();
-    if (player.ima && player.ima.adsLoader && typeof player.ima.adsLoader.contentComplete === 'function') {
-      player.ima.adsLoader.contentComplete();
+
+    // Clean up existing player if exists
+    if (player && typeof player.dispose === 'function') {
+      player.dispose();
     }
-    setTimeout(() => {
-      player.ima.setContentWithAdTag(contentSrc, fullAdTag, false);
+
+    const videoContainer = document.getElementById('vid-container');
+    videoContainer.innerHTML = `
+      <button id="close-float" style="display:none;position:absolute;top:4px;right:4px;z-index:10001;background:#000;color:#fff;border:none;padding:4px 8px;font-size:14px;cursor:pointer;">×</button>
+      <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360" muted autoplay></video>
+    `;
+
+    player = videojs('content_video', {
+      autoplay: true,
+      muted: true,
+      controls: true,
+      sources: [{
+        src: contentSrc,
+        type: 'video/mp4'
+      }]
+    });
+
+    player.ima({
+      id: 'content_video',
+      adTagUrl: fullAdTag,
+      debug: true
+    });
+
+    player.ready(() => {
+      player.ima.initializeAdDisplayContainer();
       player.ima.requestAds();
-      player.play();
-    }, 400);
+
+      // DEBUG LOGGING
+      player.ima.addEventListener(google.ima.AdEvent.Type.LOADED, () => {
+        console.log('[IMA] Ad loaded');
+      });
+      player.ima.addEventListener(google.ima.AdEvent.Type.STARTED, () => {
+        console.log('[IMA] Ad started');
+      });
+      player.ima.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, (e) => {
+        console.warn('[IMA] Ad error:', e.getError());
+      });
+    });
+
+    player.on('ended', () => {
+      setTimeout(() => {
+        initPlayer();
+      }, 500);
+    });
   }
 
-  player.ready(() => {
-    player.ima.initializeAdDisplayContainer();
-    playAdThenContent();
-  });
-
-  player.on('ended', () => {
-    playAdThenContent();
-  });
-
-  // Floating logic
   window.addEventListener('DOMContentLoaded', () => {
+    initPlayer();
+
     const anchor = document.getElementById('video-anchor');
     const container = document.getElementById('vid-container');
     const isDesktop = window.matchMedia('(min-width: 768px)').matches;
@@ -974,10 +999,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     observer.observe(anchor);
 
-    const closeBtn = document.getElementById('close-float');
-    closeBtn.addEventListener('click', () => {
-      container.classList.remove('floating');
-      closeBtn.style.display = 'none';
+    document.addEventListener('click', (e) => {
+      if (e.target.id === 'close-float') {
+        container.classList.remove('floating');
+        e.target.style.display = 'none';
+      }
     });
   });
 </script>
