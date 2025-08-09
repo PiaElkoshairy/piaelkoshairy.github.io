@@ -489,8 +489,8 @@ p {
     position: fixed;
     bottom: 2rem;
     right: 1rem;
-    width: 280px;
-    height: 140px;
+    width: 248px;
+    height: 130px;
     z-index: 9999;
     background: #000;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
