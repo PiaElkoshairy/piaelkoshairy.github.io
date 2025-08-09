@@ -934,19 +934,19 @@ document.addEventListener('DOMContentLoaded', function () {
         player.one('click', startPlayback);
     });
 
-    // --- NEW: Add the looping logic here ---
+    // --- NEW & CORRECTED Looping Logic ---
     player.on('ended', () => {
-        // This event fires when the content video finishes.
-        // We need to re-initialize the ad manager and request new ads.
+        // Use the IMA SDK's built-in methods to handle the loop.
+        // Calling this will tell the IMA plugin to end its "content" phase
+        // and prepare for the next ad break.
+        player.ima.changeAdTag(player.ima.adTagUrl); // Re-set the ad tag URL
+        player.ima.requestAds(); // Re-request the ads
 
-        // First, reset the video to the beginning.
-        player.currentTime(0);
-
-        // Then, re-request ads. This will cause the pre-roll ad to play again.
-        // The IMA plugin will automatically handle playing the content video
-        // after the pre-roll ad completes.
-        player.ima.initializeAdDisplayContainer();
-        player.ima.requestAds();
+        // Some users also find that calling these methods from the ima plugin
+        // can help to clear the state and allow for a clean restart.
+        // It's a bit more aggressive, but can be useful.
+        // player.ima.adsManager.destroy(); // Destroy the existing adsManager
+        // player.ima.contentComplete();    // Tell the SDK the content is complete
     });
 
     // --- Floating logic (unchanged) ---
