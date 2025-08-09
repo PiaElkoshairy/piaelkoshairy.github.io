@@ -916,59 +916,68 @@ document.addEventListener('DOMContentLoaded', function () {
                               <script src="https://cdn.jsdelivr.net/npm/videojs-ima@1.10.1/dist/videojs.ima.min.js"></script>
 
                               <script>
-                                  const player = videojs('content_video');
+    const player = videojs('content_video');
 
-                                  player.ima({
-                                    id: 'content_video',
-                                    adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=',
-                                    // [vmap test] adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/21697839273/demotag/video&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator='
-                                    debug: true
-                                  });
+    player.ima({
+        id: 'content_video',
+        adTagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21697839273/demotag/video&description_url=https%3A%2F%2Fpiaelkoshairy.github.io&env=vp&impl=s&sz=1x1&gdfp_req=1&output=vast&cust_params=videotype%3Dlongform&unviewed_position_start=1&correlator=',
+        debug: true
+    });
 
-                                  player.ready(() => {
-                                    // 👇 Wait for actual user interaction before starting ads
-                                    const startPlayback = () => {
-                                      player.ima.initializeAdDisplayContainer(); // Critical for VMAP
-                                      player.ima.requestAds();
-                                      player.play();
+    player.ready(() => {
+        const startPlayback = () => {
+            player.ima.initializeAdDisplayContainer();
+            player.ima.requestAds();
+            player.play();
+            player.off('click', startPlayback);
+        };
+        player.one('click', startPlayback);
+    });
 
-                                      // Optional: Remove listener to prevent double call
-                                      player.off('click', startPlayback);
-                                    };
+    // --- NEW: Add the looping logic here ---
+    player.on('ended', () => {
+        // This event fires when the content video finishes.
+        // We need to re-initialize the ad manager and request new ads.
 
-                                    // 👇 Bind it to the player's first click or tap
-                                    player.one('click', startPlayback);
-                                  });
+        // First, reset the video to the beginning.
+        player.currentTime(0);
 
-                                  // --- Floating logic (unchanged) ---
-                                  window.addEventListener('DOMContentLoaded', () => {
-                                    const anchor = document.getElementById('video-anchor');
-                                    const container = document.getElementById('vid-container');
-                                    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
-                                    if (!isDesktop) return;
+        // Then, re-request ads. This will cause the pre-roll ad to play again.
+        // The IMA plugin will automatically handle playing the content video
+        // after the pre-roll ad completes.
+        player.ima.initializeAdDisplayContainer();
+        player.ima.requestAds();
+    });
 
-                                    const observer = new IntersectionObserver(
-                                      ([entry]) => {
-                                        if (!entry.isIntersecting) {
-                                          container.classList.add('floating');
-                                          document.getElementById('close-float').style.display = 'block';
-                                        } else {
-                                          container.classList.remove('floating');
-                                          document.getElementById('close-float').style.display = 'none';
-                                        }
-                                      },
-                                      { threshold: 0 }
-                                    );
+    // --- Floating logic (unchanged) ---
+    window.addEventListener('DOMContentLoaded', () => {
+        const anchor = document.getElementById('video-anchor');
+        const container = document.getElementById('vid-container');
+        const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+        if (!isDesktop) return;
 
-                                    observer.observe(anchor);
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting) {
+                    container.classList.add('floating');
+                    document.getElementById('close-float').style.display = 'block';
+                } else {
+                    container.classList.remove('floating');
+                    document.getElementById('close-float').style.display = 'none';
+                }
+            },
+            { threshold: 0 }
+        );
 
-                                    const closeBtn = document.getElementById('close-float');
-                                    closeBtn.addEventListener('click', () => {
-                                      container.classList.remove('floating');
-                                      closeBtn.style.display = 'none';
-                                    });
-                                  });
-                                </script>
+        observer.observe(anchor);
+
+        const closeBtn = document.getElementById('close-float');
+        closeBtn.addEventListener('click', () => {
+            container.classList.remove('floating');
+            closeBtn.style.display = 'none';
+        });
+    });
+</script>
                          </div>
                          </div>
                     
