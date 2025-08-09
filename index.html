@@ -1,3 +1,887 @@
 <!DOCTYPE HTML>
+<html>
+<head>
+    <title>Lorem ipsum</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-<html>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<head><title>Pia Elkoshairy</title></head>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<body>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<div class="resume_right">Lorem ipsum dolor sit amet, consectetur adipiscing elit.<div class="resume_profile">Lorem ipsum dolor sit amet, consectetur adipiscing elit.<h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<div class="resume_item resume_about">Lorem ipsum dolor sit amet, consectetur adipiscing elit.<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/main-responsive.css" />
+    <link rel="stylesheet" media="print" href="css/main.css" />
+    <link href="fontawesome-free-6.7.2-web/css/fontawesome.css" rel="stylesheet" />
+    <link href="fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet" />
+    <link href="fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet" />
+       
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function () {
+  $('.expand').each(function () {
+    const $section = $(this);
+    const $link = $section.find('a').first();
+    const label = $link.text().replace(/\s*[+-]$/, '').trim();
+    $link.data('base-label', label);
+    $link.text(label + ' +');
+
+    // Collapse initially using line-height
+    const lineHeight = parseInt($section.css('line-height') * 1.1);
+    const collapsedHeight = lineHeight;
+
+    $section.css({
+      height: collapsedHeight + 'px',
+      overflow: 'hidden',
+      transition: 'height 0.3s ease'
+    }).attr('data-expanded', 'false');
+  });
+
+  $('.expand a').click(function (e) {
+    e.preventDefault();
+    const $link = $(this);
+    const $section = $link.closest('.expand');
+    const isExpanded = $section.attr('data-expanded') === 'true';
+    const base = $link.data('base-label');
+
+    const lineHeight = parseInt($section.css('line-height'));
+    const collapsedHeight = lineHeight;
+
+    if (isExpanded) {
+      $section.css('height', collapsedHeight + 'px');
+      $section.attr('data-expanded', 'false');
+      $link.text(base + ' +');
+    } else {
+      $section.css('height', $section.prop('scrollHeight') + 'px');
+      $section.attr('data-expanded', 'true');
+      $link.text(base + ' –');
+    }
+  });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (window.innerWidth <= 768) {
+    const resume = document.querySelector('.resume');
+
+    // Create a new unified container
+    const mobileContainer = document.createElement('div');
+    mobileContainer.classList.add('resume_content');
+    resume.appendChild(mobileContainer);
+
+    // Select all .resume_item elements from both left and right
+    const items = document.querySelectorAll('.resume_left .resume_item, .resume_right .resume_item');
+
+    // Move items to new container
+    items.forEach(item => {
+      mobileContainer.appendChild(item);
+    });
+
+    // Optional: also move .resume_about block (which is not a .resume_item)
+    const about = document.querySelector('.resume_about');
+    if (about) {
+      mobileContainer.insertBefore(about, mobileContainer.firstChild.nextSibling);
+    }
+  }
+});
+</script>
+
+<script type="text/javascript" async=true>
+(function() {
+  var host = window.location.hostname;
+  var element = document.createElement('script');
+  var firstScript = document.getElementsByTagName('script')[0];
+  var url = 'https://cmp.inmobi.com'
+    .concat('/choice/', 'EAsuR2wLacZTj', '/', host, '/choice.js?tag_version=V3');
+  var uspTries = 0;
+  var uspTriesLimit = 3;
+  element.async = true;
+  element.type = 'text/javascript';
+  element.src = url;
+
+  firstScript.parentNode.insertBefore(element, firstScript);
+
+  function makeStub() {
+    var TCF_LOCATOR_NAME = '__tcfapiLocator';
+    var queue = [];
+    var win = window;
+    var cmpFrame;
+
+    function addFrame() {
+      var doc = win.document;
+      var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+      if (!otherCMP) {
+        if (doc.body) {
+          var iframe = doc.createElement('iframe');
+
+          iframe.style.cssText = 'display:none';
+          iframe.name = TCF_LOCATOR_NAME;
+          doc.body.appendChild(iframe);
+        } else {
+          setTimeout(addFrame, 5);
+        }
+      }
+      return !otherCMP;
+    }
+
+    function tcfAPIHandler() {
+      var gdprApplies;
+      var args = arguments;
+
+      if (!args.length) {
+        return queue;
+      } else if (args[0] === 'setGdprApplies') {
+        if (
+          args.length > 3 &&
+          args[2] === 2 &&
+          typeof args[3] === 'boolean'
+        ) {
+          gdprApplies = args[3];
+          if (typeof args[2] === 'function') {
+            args[2]('set', true);
+          }
+        }
+      } else if (args[0] === 'ping') {
+        var retr = {
+          gdprApplies: gdprApplies,
+          cmpLoaded: false,
+          cmpStatus: 'stub'
+        };
+
+        if (typeof args[2] === 'function') {
+          args[2](retr);
+        }
+      } else {
+        if(args[0] === 'init' && typeof args[3] === 'object') {
+          args[3] = Object.assign(args[3], { tag_version: 'V3' });
+        }
+        queue.push(args);
+      }
+    }
+
+    function postMessageEventHandler(event) {
+      var msgIsString = typeof event.data === 'string';
+      var json = {};
+
+      try {
+        if (msgIsString) {
+          json = JSON.parse(event.data);
+        } else {
+          json = event.data;
+        }
+      } catch (ignore) {}
+
+      var payload = json.__tcfapiCall;
+
+      if (payload) {
+        window.__tcfapi(
+          payload.command,
+          payload.version,
+          function(retValue, success) {
+            var returnMsg = {
+              __tcfapiReturn: {
+                returnValue: retValue,
+                success: success,
+                callId: payload.callId
+              }
+            };
+            if (msgIsString) {
+              returnMsg = JSON.stringify(returnMsg);
+            }
+            if (event && event.source && event.source.postMessage) {
+              event.source.postMessage(returnMsg, '*');
+            }
+          },
+          payload.parameter
+        );
+      }
+    }
+
+    while (win) {
+      try {
+        if (win.frames[TCF_LOCATOR_NAME]) {
+          cmpFrame = win;
+          break;
+        }
+      } catch (ignore) {}
+
+      if (win === window.top) {
+        break;
+      }
+      win = win.parent;
+    }
+    if (!cmpFrame) {
+      addFrame();
+      win.__tcfapi = tcfAPIHandler;
+      win.addEventListener('message', postMessageEventHandler, false);
+    }
+  };
+
+  makeStub();
+
+  function makeGppStub() {
+    const CMP_ID = 10;
+    const SUPPORTED_APIS = [
+      '2:tcfeuv2',
+      '6:uspv1',
+      '7:usnatv1',
+      '8:usca',
+      '9:usvav1',
+      '10:uscov1',
+      '11:usutv1',
+      '12:usctv1'
+    ];
+
+    window.__gpp_addFrame = function (n) {
+      if (!window.frames[n]) {
+        if (document.body) {
+          var i = document.createElement("iframe");
+          i.style.cssText = "display:none";
+          i.name = n;
+          document.body.appendChild(i);
+        } else {
+          window.setTimeout(window.__gpp_addFrame, 10, n);
+        }
+      }
+    };
+    window.__gpp_stub = function () {
+      var b = arguments;
+      __gpp.queue = __gpp.queue || [];
+      __gpp.events = __gpp.events || [];
+
+      if (!b.length || (b.length == 1 && b[0] == "queue")) {
+        return __gpp.queue;
+      }
+
+      if (b.length == 1 && b[0] == "events") {
+        return __gpp.events;
+      }
+
+      var cmd = b[0];
+      var clb = b.length > 1 ? b[1] : null;
+      var par = b.length > 2 ? b[2] : null;
+      if (cmd === "ping") {
+        clb(
+          {
+            gppVersion: "1.1", // must be “Version.Subversion”, current: “1.1”
+            cmpStatus: "stub", // possible values: stub, loading, loaded, error
+            cmpDisplayStatus: "hidden", // possible values: hidden, visible, disabled
+            signalStatus: "not ready", // possible values: not ready, ready
+            supportedAPIs: SUPPORTED_APIS, // list of supported APIs
+            cmpId: CMP_ID, // IAB assigned CMP ID, may be 0 during stub/loading
+            sectionList: [],
+            applicableSections: [-1],
+            gppString: "",
+            parsedSections: {},
+          },
+          true
+        );
+      } else if (cmd === "addEventListener") {
+        if (!("lastId" in __gpp)) {
+          __gpp.lastId = 0;
+        }
+        __gpp.lastId++;
+        var lnr = __gpp.lastId;
+        __gpp.events.push({
+          id: lnr,
+          callback: clb,
+          parameter: par,
+        });
+        clb(
+          {
+            eventName: "listenerRegistered",
+            listenerId: lnr, // Registered ID of the listener
+            data: true, // positive signal
+            pingData: {
+              gppVersion: "1.1", // must be “Version.Subversion”, current: “1.1”
+              cmpStatus: "stub", // possible values: stub, loading, loaded, error
+              cmpDisplayStatus: "hidden", // possible values: hidden, visible, disabled
+              signalStatus: "not ready", // possible values: not ready, ready
+              supportedAPIs: SUPPORTED_APIS, // list of supported APIs
+              cmpId: CMP_ID, // list of supported APIs
+              sectionList: [],
+              applicableSections: [-1],
+              gppString: "",
+              parsedSections: {},
+            },
+          },
+          true
+        );
+      } else if (cmd === "removeEventListener") {
+        var success = false;
+        for (var i = 0; i < __gpp.events.length; i++) {
+          if (__gpp.events[i].id == par) {
+            __gpp.events.splice(i, 1);
+            success = true;
+            break;
+          }
+        }
+        clb(
+          {
+            eventName: "listenerRemoved",
+            listenerId: par, // Registered ID of the listener
+            data: success, // status info
+            pingData: {
+              gppVersion: "1.1", // must be “Version.Subversion”, current: “1.1”
+              cmpStatus: "stub", // possible values: stub, loading, loaded, error
+              cmpDisplayStatus: "hidden", // possible values: hidden, visible, disabled
+              signalStatus: "not ready", // possible values: not ready, ready
+              supportedAPIs: SUPPORTED_APIS, // list of supported APIs
+              cmpId: CMP_ID, // CMP ID
+              sectionList: [],
+              applicableSections: [-1],
+              gppString: "",
+              parsedSections: {},
+            },
+          },
+          true
+        );
+      } else if (cmd === "hasSection") {
+        clb(false, true);
+      } else if (cmd === "getSection" || cmd === "getField") {
+        clb(null, true);
+      }
+      //queue all other commands
+      else {
+        __gpp.queue.push([].slice.apply(b));
+      }
+    };
+    window.__gpp_msghandler = function (event) {
+      var msgIsString = typeof event.data === "string";
+      try {
+        var json = msgIsString ? JSON.parse(event.data) : event.data;
+      } catch (e) {
+        var json = null;
+      }
+      if (typeof json === "object" && json !== null && "__gppCall" in json) {
+        var i = json.__gppCall;
+        window.__gpp(
+          i.command,
+          function (retValue, success) {
+            var returnMsg = {
+              __gppReturn: {
+                returnValue: retValue,
+                success: success,
+                callId: i.callId,
+              },
+            };
+            event.source.postMessage(msgIsString ? JSON.stringify(returnMsg) : returnMsg, "*");
+          },
+          "parameter" in i ? i.parameter : null,
+          "version" in i ? i.version : "1.1"
+        );
+      }
+    };
+    if (!("__gpp" in window) || typeof window.__gpp !== "function") {
+      window.__gpp = window.__gpp_stub;
+      window.addEventListener("message", window.__gpp_msghandler, false);
+      window.__gpp_addFrame("__gppLocator");
+    }
+  };
+
+  makeGppStub();
+
+  var uspStubFunction = function() {
+    var arg = arguments;
+    if (typeof window.__uspapi !== uspStubFunction) {
+      setTimeout(function() {
+        if (typeof window.__uspapi !== 'undefined') {
+          window.__uspapi.apply(window.__uspapi, arg);
+        }
+      }, 500);
+    }
+  };
+
+  var checkIfUspIsReady = function() {
+    uspTries++;
+    if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+      console.warn('USP is not accessible');
+    } else {
+      clearInterval(uspInterval);
+    }
+  };
+
+  if (typeof window.__uspapi === 'undefined') {
+    window.__uspapi = uspStubFunction;
+    var uspInterval = setInterval(checkIfUspIsReady, 6000);
+  }
+})();
+</script>
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
+<script>
+  window.googletag = window.googletag || {cmd: []};
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/21697839273/demotag/billboard', [970, 250], 'div-gpt-ad-1753344059773-0').addService(googletag.pubads());
+    googletag.defineSlot('/21697839273/demotag/leaderboard', [728, 90], 'div-gpt-ad-1753344270292-0').addService(googletag.pubads());
+    googletag.defineSlot('/21697839273/demotag/skyscraper', [300, 600], 'div-gpt-ad-1754390605107-0').addService(googletag.pubads());
+      googletag.defineSlot('/21697839273/demotag/skyscraper-r', [300, 600], 'div-gpt-ad-1754392856482-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<link rel="stylesheet" href="https://googleads.github.io/videojs-ima/node_modules/video.js/dist/video-js.min.css" />
+    <link rel="stylesheet" href="https://googleads.github.io/videojs-ima/node_modules/videojs-contrib-ads/dist/videojs.ads.css" />
+    <link rel="stylesheet" href="https://googleads.github.io/videojs-ima/dist/videojs.ima.css" />
+</head>
+
+<body class="is-preload">
+
+
+<div class="gam-container-lb">
+<div id='div-gpt-ad-1753344270292-0' style='min-width: 728px; min-height: 90px;'>
+  <script>
+    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1753344270292-0'); });
+  </script>
+</div>
+</div>
+
+<div class="gam-container-sky left">
+<div id='div-gpt-ad-1754390605107-0' style='min-width: 300px; min-height: 600px;'>
+  <script>
+    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1754390605107-0'); });
+  </script>
+</div>
+</div>
+
+<div class="gam-container-sky right">
+<div id='div-gpt-ad-1754392856482-0' style='min-width: 300px; min-height: 600px;'>
+  <script>
+    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1754392856482-0'); });
+  </script>
+</div>
+</div>
+
+<div class="resume" style="">
+  
+   <div class="resume_left">
+     <div class="resume_profile">
+       <img src="images/IMG_0498.PNG" alt="profile_pic">
+     </div>
+     <div class="divider-left" style=""><p>Lorem ipsum</p></div>
+     <div class="resume_content">
+       <div class="resume_item resume_info" style="">
+         <ul>
+           <li>
+             <div class="icon">
+               <i class="fas fa-location-pin"></i>
+             </div>
+             <div class="data">
+               Lorem ipsum
+             </div>
+           </li>
+             <li>
+             <div class="icon">
+               <i class="fas fa-paper-plane"></i>
+             </div>
+             <div class="data">
+               <a href="mailto:pia.elkoshairy@gmail.com">pia.elkoshairy@gmail.com</a>
+             </div>
+           </li> 
+           <li>
+             <div class="icon">
+               <i class="fa-solid fa-mobile-screen-button"></i>
+             </div>
+             <div class="data">
+               +31 (0)6 19751333
+             </div>
+           </li>
+           <li>
+             <div class="icon">
+               <i class="fas fa-globe"></i>
+             </div>
+             <div class="data">
+               <a href="https://piaelkoshairy.github.io" target="_blank">piaelkoshairy.github.io</a>
+             </div>
+           </li> 
+         </ul>
+       </div>
+
+       <div class="resume_item resume_skills">
+        <div class="title">
+          <p class="bold">Lorem ipsum</p>
+        </div>
+        <ul>
+          <li>
+            <div class="skill_name">
+              Lorem ipsum
+            </div>
+            <div class="skill_progress">
+              <span style="width: 100%;"></span>
+            </div>
+            
+          </li>
+          <li>
+            <div class="skill_name">
+              Lorem ipsum
+            </div>
+            <div class="skill_progress">
+              <span style="width: 95%;"></span>
+            </div>
+           
+          </li>
+          <li>
+            <div class="skill_name">
+              Lorem ipsum
+            </div>
+            <div class="skill_progress">
+              <span style="width: 85%;"></span>
+            </div>
+            
+          </li>
+          <li>
+            <div class="skill_name">
+              Lorem ipsum
+            </div>
+            <div class="skill_progress">
+              <span style="width: 50%;"></span>
+            </div>
+            
+          </li>
+          <li>
+            <div class="skill_name">
+              Lorem ipsum
+            </div>
+            <div class="skill_progress">
+              <span style="width: 10%;"></span>
+            </div>
+          
+          </li>
+        </ul>
+      </div>
+
+       <div class="resume_item resume_skills">
+        <div class="title">
+          <p class="bold">Lorem ipsum</p>
+        </div>
+       <p>Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum (basic) <span>&bull;</span> Lorem ipsum (basic) <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum (basic) <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum (remote) debugging <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum</p>
+      </div>
+
+      <div class="resume_item resume_skills">
+        <div class="title">
+          <p class="bold">Lorem ipsum</p>
+        </div>
+       <p>Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum (client & S2S)<span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum <span>&bull;</span> Lorem ipsum</p>
+      </div>
+
+       <div class="resume_item resume_social">
+         <div class="title">
+           <p class="bold">Lorem ipsum</p>
+         </div>
+          <div class="expand">
+          <a href="#">Lorem ipsum +</a>
+          <ul>
+          <li>
+            <div class="data">
+              <p class="semi-bold">2020 <span>/ The Trade Desk Edge</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+          <li>
+            <div class="data">
+              <p class="semi-bold">2019 <span>/ Mediamath NMI</span></p>
+              <p>Lorem ipsum
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="data">
+              <p class="semi-bold">2019 <span>/ Google Publisher University</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+              <li>
+            <div class="data">
+              <p class="semi-bold">2018 <span>/ Google Publisher University</span></p>
+              <p>Lorem ipsum</p>
+            <li>
+            <div class="data">
+              <p class="semi-bold">2015 <span>/ Duke University (Coursera)</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+          </ul>
+            </div>
+          <div class="expand">
+          <a href="#">Lorem ipsum +</a>
+          <ul>
+          <li>
+            <div class="data">
+              <p class="semi-bold">2025 <span>/ Todd Birzer (Udemy)</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li> 
+           <li>
+            <div class="data">
+              <p class="semi-bold">2024 <span>/ 365 Careers (Udemy)</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li> 
+           <li>
+            <div class="data">
+              <p class="semi-bold">2024 <span>/ Learn Prompting</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li> 
+       
+              <li>
+            <div class="data">
+              <p class="semi-bold">2023 <span>/ M. Rubio (Udemy)</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+          
+             <li>
+            <div class="data">
+              <p class="semi-bold">2017 <span>/ Duke University (Coursera)</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+                  <li>
+            <div class="data">
+              <p class="semi-bold">2016 <span>/ Udemy</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+             <li>
+            <div class="data">
+              <p class="semi-bold">2013 <span>/ Excel With Business</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+          </ul>
+          </div>
+          <div class="expand">
+          <a href="#">Lorem ipsum +</a>
+            <ul> 
+           <li>
+            <div class="data">
+              <p class="semi-bold">2016 <span>/ University of Irvine (Coursera)</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+          <li>
+            <div class="data">
+              <p class="semi-bold">2015 <span>/ Copenhagen Business School (Coursera)</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+          </ul>
+          </div>
+          <div class="expand">
+          <a href="#">Lorem ipsum +</a>
+            <ul> 
+              <li>
+            <div class="data">
+              <p class="semi-bold">2019 <span>/ Educational Testing Service</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+            <li>
+            <div class="data">
+              <p class="semi-bold">2012 <span>/ Instituto México Americano de Cultura</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+          <li>
+            <div class="data">
+              <p class="semi-bold">2011 <span>/ United Nations SDTU</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+          <li>
+            <div class="data">
+              <p class="semi-bold">2010 <span>/ University of Cambridge</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+          <li>
+            <div class="data">
+              <p class="semi-bold">2009 <span>/ Zamora Academia de Español</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+          </ul>
+          </div>
+             <div class="expand">
+          <a href="#">Lorem ipsum +</a>
+            <ul> 
+               <li>
+            <div class="data">
+              <p class="semi-bold">2021 <span>/ Bloom (Udemy)</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li> 
+          <li>
+            <div class="data">
+              <p class="semi-bold">2021 <span>/ S. Ballinger (Udemy)</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>  
+          <li>
+            <div class="data">
+              <p class="semi-bold">2020 <span>/ Bloom (Udemy)</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li>
+           <li>
+            <div class="data">
+              <p class="semi-bold">2020 <span>/ Yonsei University (Coursera)</span></p>
+              <p>Lorem ipsum</p>
+            </div>
+          </li> 
+          </ul>
+          </div>
+          </div>
+       </div>
+     </div>
+
+
+    <div class="resume_right">
+            <div class="resume_profile" style="">
+                <h1>LOREM IPSUM</h1>
+                <div class="resume_item resume_about" style="padding-top: 10px; font-weight: lighter;">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+            </div>
+            <div class="divider-right" style="">
+                <p></p>
+            </div>
+        <div class="resume_content">
+          
+
+            <div class="resume_item resume_work">
+                <div class="title">
+                <p class="bold">Lorem ipsum</p>
+                </div>
+                <p class="bold"><span>Lorem ipsum</span> </p>
+
+                <ul>
+                    <li>
+                        <div class="date">Lorem ipsum <span>/ Lorem ipsum</span></div> 
+                        <div class="info">
+                            <p class="semi-bold">Lorem ipsum</p> 
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+<p class="expand"><a>Lorem ipsum +</a>
+
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <br>
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+</p>
+
+<p class="expand"><a>Lorem ipsum +</a>
+<br>
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+</p>
+                        </div>
+                    </li>
+                    <li>
+                  <li>
+                        <div class="date">Lorem ipsum <span>/ Lorem ipsum</span></div> 
+                        <div class="info">
+                            <p class="semi-bold">Lorem ipsum</p> 
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+<p class="expand"><a>Lorem ipsum +</a>
+
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <br>
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+</p>
+
+<p class="expand"><a>Lorem ipsum +</a>
+<br>
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+<br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+</p>
+                        </div>
+                    </li>
+                    <li>
+                    <div class="date">Lorem ipsum <span>/ Lorem ipsum</span></div>
+                    <div class="info">
+                            <p class="semi-bold">Lorem ipsum</p> 
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <p class="expand"><a>Lorem ipsum +</a>
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                       </p>
+                        </div>
+                    </li>
+                    <li>
+                    <div class="date">Lorem ipsum <span>/ Lorem ipsum</span></div>
+                    <div class="info">
+                            <p class="semi-bold">Lorem ipsum</p> 
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                           <p class="expand"><a>Lorem ipsum +</a>
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="date">Lorem ipsum <span>/ Lorem ipsum</span></div>
+                        <div class="info">
+                                <p class="semi-bold">Lorem ipsum</p> 
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                               <p class="expand"><a>Lorem ipsum +</a>
+                                <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                                <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            </p>
+                            </div>
+                              <div class="gam-container-mpu">
+                            </div>
+                        </li>
+                </ul>
+                <p class="bold"><span>Lorem ipsum</span> </p>
+                <ul>
+                    <li>
+                        <div class="date">Lorem ipsum <span>/ Lorem ipsum</span></div> 
+                        <div class="info">
+                            <p class="semi-bold">Lorem ipsum</p> 
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <p class="expand"><a>Lorem ipsum +</a>
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        </p>
+                        </div>
+                    </li>
+                    <li>
+                    <div class="date">Lorem ipsum <span>/ Lorem ipsum</span></div>
+                    <div class="info">
+                            <p class="semi-bold">Lorem ipsum</p> 
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <p class="expand"><a>Lorem ipsum +</a>
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit;
+                            <br>&bull; Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        </div>
+                    </li>
+                    </ul>
+                          <div id="video-anchor">
+                          <div id="vid-container">
+                              <button id="close-float" style="display:none;position:absolute;top:4px;right:4px;z-index:10001;background:#000;color:#fff;border:none;padding:4px 8px;font-size:14px;cursor:pointer;">×</button>           
+                              <video id="content_video" class="video-js vjs-default-skin" controls preload="auto" autoplay muted>
+                                <source src="video/Expertos en publicidad digital - IMPAKTU.mp4" type="video/mp4" />
+                              </video>
+
+                              <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+                              <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
