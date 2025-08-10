@@ -82,7 +82,7 @@ p {
   height: auto;
   display: flex;
   margin: 0px auto;
-  margin-bottom: 1em;
+  margin-bottom: 3em;
   background: #d1e0df;
 }
 
@@ -802,12 +802,14 @@ p {
     transition: all 0.4s ease;
     z-index: 1;
 }
+
+.video-js {
+    width: 320px;
+}
+
   }
 
-  .video-js {
-    
-    width: 100%;
-}
+  
 /* LARGE SCREENS ONLY */
 
 @media (min-width: 1550px) {
