@@ -599,17 +599,15 @@ p {
 }
 
 .resume_item.resume_info ul {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px 10px;
+  
   padding-left: 0;
-  color:#555555;
+
 }
 
 .resume_item.resume_info ul li {
   display: flex;
   align-items: center;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 18px;
 }
 
@@ -624,10 +622,6 @@ p {
 
 .resume_item.resume_info ul li .data {
   flex: 1;
-}
-
-.resume_item.resume_info ul li .data a {
-  color: #555555;
 }
 
 .resume .icon i, .resume .resume_right .resume_hobby ul li i {
