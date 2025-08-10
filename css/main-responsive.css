@@ -497,6 +497,10 @@ p {
   transform: translateY(-50%);
 }
 
+.gg-image {
+  width: 480px;
+}
+
 
 /* IMA SDK video ad container */ 
 
@@ -805,6 +809,10 @@ p {
 
 .video-js {
     width: 320px;
+}
+
+.gg-image {
+  width: 320px;
 }
 
   }
