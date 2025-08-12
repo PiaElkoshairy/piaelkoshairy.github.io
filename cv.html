@@ -579,8 +579,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 pbjs.initAdserverSet = true;
                 googletag.cmd.push(function() {
                     pbjs.que.push(function() {
-                        pbjs.setTargetingForGPTAsync();
-                        googletag.pubads().refresh();
+                    pbjs.setTargetingForGPTAsync();
+googletag.pubads().refresh([
+  googletag.slots['div-gpt-ad-1754995943402-0'],
+  googletag.slots['div-gpt-ad-1753344270292-0'],
+  googletag.slots['div-gpt-ad-1754839208950-0']
+]);
                     });
                 });
             }
@@ -590,12 +594,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }, FAILSAFE_TIMEOUT);
 
             googletag.cmd.push(function() {
-                googletag.defineSlot('/21697839273/demotag/rectangle', [300, 250], 'div-gpt-ad-1754995943402-0').addService(googletag.pubads());
-                googletag.pubads().enableSingleRequest();
-                googletag.enableServices();
-            });
-            googletag.cmd.push(function() {
                    // googletag.defineSlot('/21697839273/demotag/billboard', [970, 250], 'div-gpt-ad-1753344059773-0').addService(googletag.pubads());
+                googletag.slots['div-gpt-ad-1754995943402-0'] = googletag
+                    .defineSlot('/21697839273/demotag/rectangle', [300, 250], 'div-gpt-ad-1754995943402-0')
+                    .addService(googletag.pubads());
                 googletag.defineSlot('/21697839273/demotag/leaderboard', div_4_sizes, 'div-gpt-ad-1753344270292-0').addService(googletag.pubads());
                 googletag.defineSlot('/21697839273/demotag/skyscraper', div_3_sizes, 'div-gpt-ad-1754390605107-0').addService(googletag.pubads());
                 googletag.defineSlot('/21697839273/demotag/skyscraper-r', div_3_sizes, 'div-gpt-ad-1754392856482-0').addService(googletag.pubads());
