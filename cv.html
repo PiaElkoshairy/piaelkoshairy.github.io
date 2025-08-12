@@ -412,7 +412,203 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 <!-- End InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
 
-<!-- Start GAM -->
+<!-- Prebid wrapper -->
+ 		<script async src="//www.googletagservices.com/tag/js/gpt.js"></script>
+        <script async src="/prebidjs/prebid8.42.0.js"></script>
+        <script>
+            var div_1_sizes = [
+              [1, 1]
+            ];
+            var div_2_sizes = [
+				      [300, 250],
+              [600, 300]
+            ];
+            var div_3_sizes = [
+              [600, 300],
+              [600, 160]
+            ];
+			      var div_4_sizes = [
+              [728, 90]
+            ];
+            var PREBID_TIMEOUT = 1000;
+            var FAILSAFE_TIMEOUT = 3000;
+
+            var adUnits = [
+                {
+                    code: '/21697839273/demotag/leaderboard',
+                    mediaTypes: {
+                        banner: {
+                                sizes: div_4_sizes
+                                }
+                    },
+                        bids:   [{
+                    bidder: 'appnexus',
+                    params: {
+                            placementId: 13144370
+                            }
+                  },
+                  {	bidder: 'gumgum',
+                    params: {
+                            zone: 'wjh7hdlt', // GG skins
+                            product: 'skins'
+                            }
+                  }]
+                },
+				        {
+                    code: '/21697839273/demotag/rectangle',
+                    mediaTypes: {
+                        banner: {
+                                sizes: div_2_sizes
+                                }
+                    },
+                        bids:   [{
+                    bidder: 'appnexus',
+                    params: {
+                            placementId: 13144370
+                            }
+                  },
+				          { bidder: "gumgum",
+   				          params: {
+                            zone: "vpbtfzzn", // zone ID TBC
+                            slot: 315125 // slot ID TBC
+                            }
+				                        }]
+                },
+				        {
+                    code: '/21697839273/demotag/adhesion',
+                    mediaTypes: {
+                        banner: {
+                                sizes: div_1_sizes
+                                }
+                    },
+                        bids:   [{
+                    bidder: 'appnexus',
+                    params: {
+                            placementId: 13144370
+                            }
+                    },
+                    { bidder: 'gumgum',
+   				            params: {
+                              zone: 'g1whqpzc' // GG in-screen
+                              }
+				                        }]
+                }
+                          ];
+
+            // ======== DO NOT EDIT BELOW THIS LINE =========== //
+            var googletag = googletag || {};
+            googletag.cmd = googletag.cmd || [];
+            googletag.cmd.push(function() {
+                googletag.pubads().disableInitialLoad();
+            });
+
+            var pbjs = pbjs || {};
+            pbjs.que = pbjs.que || [];
+
+            pbjs.que.push(function() {
+
+							pbjs.setConfig({
+							//debug: true,
+							schain: {
+			   					 validation: "strict",
+										config: {
+										ver:"1.0",
+										complete: 1,
+										nodes: [
+											{
+											asi:"piaelkoshairy.github.io",
+											sid:"00001",
+											hp:1
+											}
+
+										]
+										}
+			  },
+							userSync: {
+
+							syncEnabled: true,
+								filterSettings: {
+										iframe: {
+											bidders: ['gumgum'], // Only GG enabled for iframe sync
+											filter: 'include'
+										},
+										image: {
+											bidders: '*', 
+											filter: 'include'
+			}
+								 }
+						 },
+							consentManagement: {
+								gdpr: {
+									cmpApi: 'iab',
+									timeout: 8000,
+									defaultGdprScope: true,
+									iframeEnabled: true
+									},
+									gpp: {
+									cmpApi: 'iab',
+									timeout: 8000
+									}
+							},
+							currency: {
+									adServerCurrency: "USD",
+									granularityMultiplier: 1,
+									defaultRates: {
+										"GBP": { "USD": 1.22 },
+										"EUR": { "USD": 1.00 },
+										"CAD": { "USD": 0.75 },
+										"AUD": { "USD": 0.66 },
+										"JPY": { "USD": 0.0067 }
+									},
+									conversionRateFile: "https://cdn.jsdelivr.net/npm/@prebid/currency@1.16.0/rates.json",
+									fallbackOnUnknownRate: false
+							}
+          });
+
+
+                pbjs.addAdUnits(adUnits);
+                pbjs.requestBids({
+                    bidsBackHandler: initAdserver,
+                    timeout: PREBID_TIMEOUT
+                });
+
+            });
+
+            function initAdserver() {
+                if (pbjs.initAdserverSet) return;
+                pbjs.initAdserverSet = true;
+                googletag.cmd.push(function() {
+                    pbjs.que.push(function() {
+                        pbjs.setTargetingForGPTAsync();
+                        googletag.pubads().refresh();
+                    });
+                });
+            }
+            // in case PBJS doesn't load
+            setTimeout(function() {
+                initAdserver();
+            }, FAILSAFE_TIMEOUT);
+
+            googletag.cmd.push(function() {
+                googletag.defineSlot('/21697839273/demotag/rectangle', [300, 250], 'div-gpt-ad-1754995943402-0').addService(googletag.pubads());
+                googletag.pubads().enableSingleRequest();
+                googletag.enableServices();
+            });
+            googletag.cmd.push(function() {
+                   // googletag.defineSlot('/21697839273/demotag/billboard', [970, 250], 'div-gpt-ad-1753344059773-0').addService(googletag.pubads());
+                googletag.defineSlot('/21697839273/demotag/leaderboard', div_4_sizes, 'div-gpt-ad-1753344270292-0').addService(googletag.pubads());
+                googletag.defineSlot('/21697839273/demotag/skyscraper', div_3_sizes, 'div-gpt-ad-1754390605107-0').addService(googletag.pubads());
+                googletag.defineSlot('/21697839273/demotag/skyscraper-r', div_3_sizes, 'div-gpt-ad-1754392856482-0').addService(googletag.pubads());
+                googletag.defineSlot('/21697839273/demotag/adhesion', div_1_sizes, 'div-gpt-ad-1754839208950-0').addService(googletag.pubads());
+                googletag.pubads().enableSingleRequest();
+                googletag.enableServices();
+            });
+
+        </script>
+
+		<!-- End Prebid wrapper  -->
+
+<!-- Start GAM GPT 
  <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
 <script>
   window.googletag = window.googletag || {cmd: []};
@@ -427,7 +623,7 @@ document.addEventListener('DOMContentLoaded', function () {
     googletag.enableServices();
   });
 </script>
-<!-- End GAM -->
+ End GAM -->
 
 <!-- Start Video.js IMA SDK -->
     <link rel="stylesheet" href="https://googleads.github.io/videojs-ima/node_modules/video.js/dist/video-js.min.css" />
@@ -446,13 +642,6 @@ document.addEventListener('DOMContentLoaded', function () {
     googletag.cmd.push(function() { googletag.display('div-gpt-ad-1753344059773-0'); });
   </script>
 </div> --> 
-
-<!-- /21697839273/demotag/adhesion -->
-<div id='div-gpt-ad-1754839208950-0'>
-  <script>
-    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1754839208950-0'); });
-  </script>
-</div>
 
   <div class="gam-container-lb">
 <!-- /21697839273/demotag/leaderboard -->
@@ -487,8 +676,17 @@ document.addEventListener('DOMContentLoaded', function () {
      <div class="resume_profile">
        <img src="images/IMG_0498.PNG" alt="profile_pic">
      </div>
+
      <div class="divider-left"><p>RESUME</p></div>
      <div class="resume_content">
+
+           <!-- /21697839273/demotag/adhesion -->
+<div id='div-gpt-ad-1754839208950-0' style="width: 1px; height: 1px;">
+  <script>
+    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1754839208950-0'); });
+  </script>
+</div>
+
 
       <div class="resume_item resume_skills">
         <div class="title">
@@ -846,8 +1044,12 @@ document.addEventListener('DOMContentLoaded', function () {
                                 campaign performance issues, tracking errors, revenue and fill rate optimization, etc.</p>
                             </div>
                               <div class="gam-container-mpu">
-                            <!-- /21697839273/demotag/xxx -->
-
+                            <!-- /21697839273/demotag/rectangle -->
+                            <div id='div-gpt-ad-1754995943402-0' style='min-width: 300px; min-height: 250px;'>
+                              <script>
+                                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1754995943402-0'); });
+                              </script>
+                            </div>
                             </div>
                         </li>
                 </ul>
