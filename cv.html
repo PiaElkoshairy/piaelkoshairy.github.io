@@ -434,66 +434,32 @@ document.addEventListener('DOMContentLoaded', function () {
             var FAILSAFE_TIMEOUT = 3000;
 
             var adUnits = [
-                {
-                    code: '/21697839273/demotag/leaderboard',
-                    mediaTypes: {
-                        banner: {
-                                sizes: div_4_sizes
-                                }
-                    },
-                        bids:   [{
-                    bidder: 'appnexus',
-                    params: {
-                            placementId: 13144370
+                            {
+                              code: '/21697839273/demotag/leaderboard',
+                              mediaTypes: { banner: { sizes: [[728, 90]] } },
+                              bids: [
+                                { bidder: 'appnexus', params: { placementId: 13144370 } },
+                                { bidder: 'gumgum', params: { zone: 'wjh7hdlt', product: 'skins' } }
+                              ]
+                            },
+                            {
+                              code: '/21697839273/demotag/rectangle',
+                              mediaTypes: { banner: { sizes: [[300, 250], [600, 300]] } },
+                              bids: [
+                                { bidder: 'appnexus', params: { placementId: 13144370 } },
+                                { bidder: 'gumgum', params: { zone: 'vpbtfzzn', slot: 315125 } }
+                              ]
+                            },
+                            {
+                              code: '/21697839273/demotag/adhesion',
+                              mediaTypes: { banner: { sizes: [[1, 1]] } },
+                              bids: [
+                                { bidder: 'appnexus', params: { placementId: 13144370 } },
+                                { bidder: 'gumgum', params: { zone: 'g1whqpzc' } }
+                              ]
                             }
-                  },
-                  {	bidder: 'gumgum',
-                    params: {
-                            zone: 'wjh7hdlt', // GG skins
-                            product: 'skins'
-                            }
-                  }]
-                },
-				        {
-                    code: '/21697839273/demotag/rectangle',
-                    mediaTypes: {
-                        banner: {
-                                sizes: div_2_sizes
-                                }
-                    },
-                        bids:   [{
-                    bidder: 'appnexus',
-                    params: {
-                            placementId: 13144370
-                            }
-                  },
-				          { bidder: "gumgum",
-   				          params: {
-                            zone: "vpbtfzzn", // zone ID TBC
-                            slot: 315125 // slot ID TBC
-                            }
-				                        }]
-                },
-				        {
-                    code: '/21697839273/demotag/adhesion',
-                    mediaTypes: {
-                        banner: {
-                                sizes: div_1_sizes
-                                }
-                    },
-                        bids:   [{
-                    bidder: 'appnexus',
-                    params: {
-                            placementId: 13144370
-                            }
-                    },
-                    { bidder: 'gumgum',
-   				            params: {
-                              zone: 'g1whqpzc' // GG in-screen
-                              }
-				                        }]
-                }
                           ];
+
 
             // ======== DO NOT EDIT BELOW THIS LINE =========== //
             var googletag = googletag || {};
@@ -566,28 +532,44 @@ document.addEventListener('DOMContentLoaded', function () {
           });
 
 
-                pbjs.addAdUnits(adUnits);
+                      pbjs.addAdUnits(adUnits);
                 pbjs.requestBids({
-                    bidsBackHandler: initAdserver,
-                    timeout: PREBID_TIMEOUT
+                  bidsBackHandler: initAdserver,
+                  timeout: PREBID_TIMEOUT
                 });
+              });
 
-            });
+              var googletag = googletag || {};
+              googletag.cmd = googletag.cmd || [];
+              googletag.slots = {};
 
-            function initAdserver() {
+              googletag.cmd.push(function () {
+                googletag.pubads().disableInitialLoad();
+
+                // Define and store slots
+                googletag.slots['rectangle'] = googletag.defineSlot('/21697839273/demotag/rectangle', [[300, 250], [600, 300]], 'div-gpt-ad-1754995943402-0').addService(googletag.pubads());
+                googletag.slots['leaderboard'] = googletag.defineSlot('/21697839273/demotag/leaderboard', [[728, 90]], 'div-gpt-ad-1753344270292-0').addService(googletag.pubads());
+                googletag.slots['adhesion'] = googletag.defineSlot('/21697839273/demotag/adhesion', [[1, 1]], 'div-gpt-ad-1754839208950-0').addService(googletag.pubads());
+
+                googletag.pubads().enableSingleRequest();
+                googletag.enableServices();
+              });
+
+              function initAdserver() {
                 if (pbjs.initAdserverSet) return;
                 pbjs.initAdserverSet = true;
-                googletag.cmd.push(function() {
-                    pbjs.que.push(function() {
+
+                googletag.cmd.push(function () {
+                  pbjs.que.push(function () {
                     pbjs.setTargetingForGPTAsync();
-googletag.pubads().refresh([
-  googletag.slots['div-gpt-ad-1754995943402-0'],
-  googletag.slots['div-gpt-ad-1753344270292-0'],
-  googletag.slots['div-gpt-ad-1754839208950-0']
-]);
-                    });
+                    googletag.pubads().refresh([
+                      googletag.slots['rectangle'],
+                      googletag.slots['leaderboard'],
+                      googletag.slots['adhesion']
+                    ]);
+                  });
                 });
-            }
+              }
             // in case PBJS doesn't load
             setTimeout(function() {
                 initAdserver();
