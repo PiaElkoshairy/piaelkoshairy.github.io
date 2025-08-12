@@ -416,20 +416,11 @@ document.addEventListener('DOMContentLoaded', function () {
  		<script async src="//www.googletagservices.com/tag/js/gpt.js"></script>
         <script async src="/prebidjs/prebid8.42.0.js"></script>
         <script>
-            var div_1_sizes = [
-              [1, 1]
-            ];
-            var div_2_sizes = [
-				      [300, 250],
-              [600, 300]
-            ];
-            var div_3_sizes = [
-              [600, 300],
-              [600, 160]
-            ];
-			      var div_4_sizes = [
-              [728, 90]
-            ];
+            var div_1_sizes = [[1, 1]];
+            var div_2_sizes = [[300, 250], [600, 300]];
+            var div_3_sizes = [[600, 300], [600, 160]];
+            var div_4_sizes = [[728, 90]];
+
             var PREBID_TIMEOUT = 1000;
             var FAILSAFE_TIMEOUT = 3000;
 
@@ -460,134 +451,103 @@ document.addEventListener('DOMContentLoaded', function () {
                             }
                           ];
 
-
-            // ======== DO NOT EDIT BELOW THIS LINE =========== //
-            var googletag = googletag || {};
-            googletag.cmd = googletag.cmd || [];
-            googletag.cmd.push(function() {
-                googletag.pubads().disableInitialLoad();
-            });
+            //var googletag = googletag || {};
+            //googletag.cmd = googletag.cmd || [];
+            //googletag.cmd.push(function() {
+            //    googletag.pubads().disableInitialLoad();
+            //});
 
             var pbjs = pbjs || {};
             pbjs.que = pbjs.que || [];
 
             pbjs.que.push(function() {
+						pbjs.setConfig({
+					//debug: true,
 
-							pbjs.setConfig({
-							//debug: true,
-							schain: {
-			   					 validation: "strict",
-										config: {
-										ver:"1.0",
-										complete: 1,
-										nodes: [
-											{
-											asi:"piaelkoshairy.github.io",
-											sid:"00001",
-											hp:1
-											}
-
-										]
-										}
-			  },
-							userSync: {
-
-							syncEnabled: true,
-								filterSettings: {
-										iframe: {
-											bidders: ['gumgum'], // Only GG enabled for iframe sync
-											filter: 'include'
-										},
-										image: {
-											bidders: '*', 
-											filter: 'include'
-			}
-								 }
-						 },
-							consentManagement: {
-								gdpr: {
-									cmpApi: 'iab',
-									timeout: 8000,
-									defaultGdprScope: true,
-									iframeEnabled: true
-									},
-									gpp: {
-									cmpApi: 'iab',
-									timeout: 8000
-									}
-							},
-							currency: {
-									adServerCurrency: "USD",
-									granularityMultiplier: 1,
-									defaultRates: {
-										"GBP": { "USD": 1.22 },
-										"EUR": { "USD": 1.00 },
-										"CAD": { "USD": 0.75 },
-										"AUD": { "USD": 0.66 },
-										"JPY": { "USD": 0.0067 }
-									},
-									conversionRateFile: "https://cdn.jsdelivr.net/npm/@prebid/currency@1.16.0/rates.json",
-									fallbackOnUnknownRate: false
-							}
-          });
-
-
-                      pbjs.addAdUnits(adUnits);
-                pbjs.requestBids({
-                  bidsBackHandler: initAdserver,
-                  timeout: PREBID_TIMEOUT
-                });
-              });
-
-              var googletag = googletag || {};
-              googletag.cmd = googletag.cmd || [];
-              googletag.slots = {};
-
-              googletag.cmd.push(function () {
-                googletag.pubads().disableInitialLoad();
-
-                // Define and store slots
-                googletag.slots['rectangle'] = googletag.defineSlot('/21697839273/demotag/rectangle', [[300, 250], [600, 300]], 'div-gpt-ad-1754995943402-0').addService(googletag.pubads());
-                googletag.slots['leaderboard'] = googletag.defineSlot('/21697839273/demotag/leaderboard', [[728, 90]], 'div-gpt-ad-1753344270292-0').addService(googletag.pubads());
-                googletag.slots['adhesion'] = googletag.defineSlot('/21697839273/demotag/adhesion', [[1, 1]], 'div-gpt-ad-1754839208950-0').addService(googletag.pubads());
-
-                googletag.pubads().enableSingleRequest();
-                googletag.enableServices();
-              });
-
-              function initAdserver() {
-                if (pbjs.initAdserverSet) return;
-                pbjs.initAdserverSet = true;
-
-                googletag.cmd.push(function () {
-                  pbjs.que.push(function () {
-                    pbjs.setTargetingForGPTAsync();
-                    googletag.pubads().refresh([
-                      googletag.slots['rectangle'],
-                      googletag.slots['leaderboard'],
-                      googletag.slots['adhesion']
-                    ]);
-                  });
-                });
+              schain: {
+                validation: "strict",
+                config: {
+                  ver: "1.0",
+                  complete: 1,
+                  nodes: [{ asi: "piaelkoshairy.github.io", sid: "00001", hp: 1 }]
+                }
+              },
+              userSync: {
+                syncEnabled: true,
+                filterSettings: {
+                  iframe: { bidders: ['gumgum'], filter: 'include' },
+                  image: { bidders: '*', filter: 'include' }
+                }
+              },
+              consentManagement: {
+                gdpr: {
+                  cmpApi: 'iab',
+                  timeout: 8000,
+                  defaultGdprScope: true,
+                  iframeEnabled: true
+                },
+                gpp: {
+                  cmpApi: 'iab',
+                  timeout: 8000
+                }
+              },
+              currency: {
+                adServerCurrency: "USD",
+                granularityMultiplier: 1,
+                defaultRates: {
+                  "GBP": { "USD": 1.22 },
+                  "EUR": { "USD": 1.00 },
+                  "CAD": { "USD": 0.75 },
+                  "AUD": { "USD": 0.66 },
+                  "JPY": { "USD": 0.0067 }
+                },
+                conversionRateFile: "https://cdn.jsdelivr.net/npm/@prebid/currency@1.16.0/rates.json",
+                fallbackOnUnknownRate: false
               }
-            // in case PBJS doesn't load
-            setTimeout(function() {
-                initAdserver();
-            }, FAILSAFE_TIMEOUT);
-
-            googletag.cmd.push(function() {
-                   // googletag.defineSlot('/21697839273/demotag/billboard', [970, 250], 'div-gpt-ad-1753344059773-0').addService(googletag.pubads());
-                googletag.slots['div-gpt-ad-1754995943402-0'] = googletag
-                    .defineSlot('/21697839273/demotag/rectangle', [300, 250], 'div-gpt-ad-1754995943402-0')
-                    .addService(googletag.pubads());
-                googletag.defineSlot('/21697839273/demotag/leaderboard', div_4_sizes, 'div-gpt-ad-1753344270292-0').addService(googletag.pubads());
-                googletag.defineSlot('/21697839273/demotag/skyscraper', div_3_sizes, 'div-gpt-ad-1754390605107-0').addService(googletag.pubads());
-                googletag.defineSlot('/21697839273/demotag/skyscraper-r', div_3_sizes, 'div-gpt-ad-1754392856482-0').addService(googletag.pubads());
-                googletag.defineSlot('/21697839273/demotag/adhesion', div_1_sizes, 'div-gpt-ad-1754839208950-0').addService(googletag.pubads());
-                googletag.pubads().enableSingleRequest();
-                googletag.enableServices();
             });
 
+            pbjs.addAdUnits(adUnits);
+            pbjs.requestBids({
+              bidsBackHandler: initAdserver,
+              timeout: PREBID_TIMEOUT
+            });
+          });
+
+          var googletag = googletag || {};
+          googletag.cmd = googletag.cmd || [];
+          googletag.slots = {};
+
+          googletag.cmd.push(function () {
+            googletag.pubads().disableInitialLoad();
+
+            googletag.slots['rectangle'] = googletag.defineSlot('/21697839273/demotag/rectangle', div_2_sizes, 'div-gpt-ad-1754995943402-0').addService(googletag.pubads());
+            googletag.slots['leaderboard'] = googletag.defineSlot('/21697839273/demotag/leaderboard', div_4_sizes, 'div-gpt-ad-1753344270292-0').addService(googletag.pubads());
+            googletag.slots['adhesion'] = googletag.defineSlot('/21697839273/demotag/adhesion', div_1_sizes, 'div-gpt-ad-1754839208950-0').addService(googletag.pubads());
+
+            googletag.defineSlot('/21697839273/demotag/skyscraper', div_3_sizes, 'div-gpt-ad-1754390605107-0').addService(googletag.pubads());
+            googletag.defineSlot('/21697839273/demotag/skyscraper-r', div_3_sizes, 'div-gpt-ad-1754392856482-0').addService(googletag.pubads());
+
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();
+          });
+
+          function initAdserver() {
+            if (pbjs.initAdserverSet) return;
+            pbjs.initAdserverSet = true;
+
+            googletag.cmd.push(function () {
+              pbjs.que.push(function () {
+                pbjs.setTargetingForGPTAsync();
+                googletag.pubads().refresh([
+                  googletag.slots['rectangle'],
+                  googletag.slots['leaderboard'],
+                  googletag.slots['adhesion']
+                ]);
+              });
+            });
+          }
+
+          setTimeout(initAdserver, FAILSAFE_TIMEOUT);
         </script>
 
 		<!-- End Prebid wrapper  -->
